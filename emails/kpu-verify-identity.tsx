@@ -67,15 +67,15 @@ const container = {
   padding: "68px 0 68px",
 };
 
-const logo = {
-  margin: "0 auto",
-};
+// const logo = {
+//   margin: "0 auto",
+// };
 
 const heading = {
   fontSize: "24px",
   fontWeight: 700,
   fontFamily: "Inter,sans-serif",
-  // margin: "0 auto",
+  color: "#000",
   textAlign: "center" as const,
 };
 

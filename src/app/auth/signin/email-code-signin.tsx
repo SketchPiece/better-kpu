@@ -16,15 +16,18 @@ export default function EmailCodeSignIn() {
     window.location.href = authCallback;
   };
 
-  const handleEmailSubmit = async (email: string) => {
-    setEmail(email);
-    setIsVerificationStep(true);
+  const sendVerificationCode = async () => {
     const result = await signIn("email", {
       email,
       redirect: false,
     });
     if (result?.error) return console.log(result.error);
+  };
 
+  const handleEmailSubmit = async (email: string) => {
+    setEmail(email);
+    setIsVerificationStep(true);
+    await sendVerificationCode();
     setIsVerificationStep(true);
   };
 
@@ -36,6 +39,7 @@ export default function EmailCodeSignIn() {
           email={email}
           onEditEmail={() => setIsVerificationStep(false)}
           onSubmit={handleCodeSubmit}
+          onResend={sendVerificationCode}
         />
       ) : (
         <EmailForm

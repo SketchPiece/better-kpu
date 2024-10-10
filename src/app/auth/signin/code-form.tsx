@@ -8,22 +8,38 @@ import {
 } from "@/components/ui/input-otp";
 import { formAnimationProps } from "./form-animation";
 import { useInput, useSubmit } from "./helpers";
+import SimpleTooltip from "@/components/ui/simple-tooltip";
+import { useState } from "react";
+import useCooldown from "@/hooks/use-cooldown";
+import { useTimeout } from "@mantine/hooks";
 
 interface CodeFormProps {
   onSubmit?: (code: string) => void;
   onEditEmail?: () => void;
+  onResend?: () => void;
   email: string;
 }
 
 export default function CodeForm({
   onSubmit,
   onEditEmail,
+  onResend,
   email,
 }: CodeFormProps) {
+  const [handleResend, cooldownRemaining] = useCooldown(() => {
+    onResend?.();
+  }, 60);
   const [code, inputProps] = useInput();
   const handleSubmit = useSubmit(() => {
     onSubmit?.(code);
   });
+
+  const resendTooltipContent =
+    cooldownRemaining > 0
+      ? cooldownRemaining > 58
+        ? "The code was sent successfully"
+        : `Resend in ${cooldownRemaining} seconds`
+      : "Click to send the code again";
 
   return (
     <motion.div
@@ -66,7 +82,22 @@ export default function CodeForm({
             Continue
           </Button>
           <p className="mt-2 text-center text-xs text-[#888888] dark:text-[#989898]">
-            You’re almost there! Just check out your email
+            Didn&apos;t get the code?
+            <br />
+            Check your junk folder or you can{" "}
+            <SimpleTooltip
+              content={resendTooltipContent}
+              side="top"
+              open={cooldownRemaining > 58 ? true : undefined}
+            >
+              <button
+                onClick={handleResend}
+                className="text-white hover:underline"
+                type="button"
+              >
+                resend it
+              </button>
+            </SimpleTooltip>
           </p>
         </div>
       </form>
