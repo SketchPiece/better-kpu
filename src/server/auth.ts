@@ -5,11 +5,6 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-// import DiscordProvider from "next-auth/providers/discord";
-// import AzureADProvider from "next-auth/providers/azure-ad";
-import EmailProvider from "next-auth/providers/email";
-
-// import { env } from "@/env";
 import { db } from "@/server/db";
 import {
   accounts,
@@ -17,6 +12,8 @@ import {
   users,
   verificationTokens,
 } from "@/server/db/schema";
+import { ResendCodeProvider } from "./providers/ResendProvider";
+import { env } from "@/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -37,11 +34,6 @@ declare module "next-auth" {
   //   // ...other properties
   //   // role: UserRole;
   // }
-}
-
-function generateAuthCode() {
-  const code = Math.floor(100000 + Math.random() * 900000); // random 6-digit code
-  return code.toString();
 }
 
 /**
@@ -70,32 +62,10 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/error",
   },
   providers: [
-    // DiscordProvider({
-    //   clientId: env.DISCORD_CLIENT_ID,
-    //   clientSecret: env.DISCORD_CLIENT_SECRET,
-    // }),
-    // AzureADProvider({
-    //   clientId: env.AZURE_AD_CLIENT_ID,
-    //   clientSecret: env.AZURE_AD_CLIENT_SECRET,
-    //   tenantId: env.AZURE_AD_TENANT_ID,
-    // }),
-    EmailProvider({
-      from: "hello",
-      maxAge: 5 * 60,
-      generateVerificationToken: async () => {
-        return generateAuthCode();
-      },
-      sendVerificationRequest({
-        identifier: email,
-        // url,
-        token,
-        // provider: { server, from },
-      }) {
-        console.log(email, token);
-        /* your function */
-      },
+    ResendCodeProvider({
+      apiKey: env.RESEND_API_KEY,
+      from: env.RESEND_EMAIL_FROM,
     }),
-
     /**
      * ...add more providers here.
      *
