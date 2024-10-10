@@ -15,6 +15,7 @@ interface OtherServicesProps {
   searchQuery?: string;
   category?: Nullable<CategoryValue>;
   quickFilter: Nullable<QuickFiltersValue>;
+  initialServices?: Service[];
 }
 
 function defineHeading(searchQuery?: string, category?: CategoryValue) {
@@ -31,6 +32,7 @@ export default function OtherServices({
   searchQuery,
   category,
   quickFilter,
+  initialServices,
 }: OtherServicesProps) {
   const {
     data: otherServices,
@@ -40,6 +42,7 @@ export default function OtherServices({
   } = useServicesInfiniteQuery({
     searchQuery,
     category,
+    initialServices,
   });
 
   const { mutate: updateFavorite } = useFavoriteMutation();

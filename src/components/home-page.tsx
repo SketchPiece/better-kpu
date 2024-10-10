@@ -7,19 +7,24 @@ import { useQuickServices } from "@/hooks/api/use-quick-services";
 import { useDebouncedValue } from "@mantine/hooks";
 import Header from "./header";
 import Greeting from "./home/greeting";
-import QuickFilters from "./home/quick-filters";
+import QuickFilters, { type QuickFiltersValue } from "./home/quick-filters";
 import { Separator } from "./ui/separator";
 import CategoriesFilterDialog from "./home/categories-filter-dialog";
 import QuickServices from "./home/quick-services";
 import OtherServices from "./home/other-services";
 import ScrollToTopButton from "./scroll-to-top-button";
-import type { UserProfile } from "@/lib/kpu-api/types";
+import type { Service, UserProfile } from "@/lib/kpu-api/types";
 
 interface HomePageProps {
   initialUserProfile?: UserProfile;
+  initialQuickServices?: Record<QuickFiltersValue, Service[]>;
+  initialServices?: Service[];
 }
 
-export default function HomePage({ initialUserProfile }: HomePageProps) {
+export default function HomePage({
+  initialUserProfile,
+  initialQuickServices,
+}: HomePageProps) {
   useColorAppearance();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useUserProfileQuery(initialUserProfile);
@@ -43,6 +48,7 @@ export default function HomePage({ initialUserProfile }: HomePageProps) {
 
   const { data: quickServices, isLoading: isQuickServicesLoading } =
     useQuickServices({
+      initialQuickServices,
       quickFilter: state.selectedQuickFilter ?? undefined,
       onServicesEmptyUpdate: (emptyFilters) => updateEmptyFilters(emptyFilters),
     });

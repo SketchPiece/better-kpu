@@ -238,12 +238,10 @@ const kpuApiClient: ApiClient = {
     });
   },
   getNotifications: async () => {
-    console.log("get notifications");
     const result = await dangerousKpuApiInstance.get(
       "https://one.kpu.ca/announcement/list?dismissed=false",
     );
 
-    console.log(result.data);
     const rawNotificationsData = z.array(z.unknown()).parse(result.data);
     const notifications = rawNotificationsData
       .map(mapNotification)

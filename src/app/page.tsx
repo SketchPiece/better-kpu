@@ -1,4 +1,5 @@
 import HomePage from "@/components/home-page";
+import kpuApiClient from "@/lib/kpu-api/kpu-api-client";
 import type { UserProfile } from "@/lib/kpu-api/types";
 import { getServerAuthSession } from "@/server/auth";
 
@@ -35,6 +36,14 @@ async function getUserProfile(): Promise<UserProfile | undefined> {
 
 export default async function Home() {
   const userProfile = await getUserProfile();
+  const quickServices = await kpuApiClient.getQuickServices({
+    roles: ["employee", "student"],
+  });
 
-  return <HomePage initialUserProfile={userProfile} />;
+  return (
+    <HomePage
+      initialUserProfile={userProfile}
+      initialQuickServices={quickServices}
+    />
+  );
 }

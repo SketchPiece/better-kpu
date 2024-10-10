@@ -3,20 +3,26 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { usePreferences } from "../use-preferences";
 import { useEffect, useRef } from "react";
 import type { CategoryValue } from "@/lib/categories";
+import type { Service } from "@/lib/kpu-api/types";
 
 interface ServicesInfiniteQueryProps {
   searchQuery?: string;
   category?: CategoryValue | null;
+  initialServices?: Service[];
 }
 
 export function useServicesInfiniteQuery({
   searchQuery,
   category,
+  initialServices,
 }: ServicesInfiniteQueryProps) {
   const { preferences } = usePreferences();
   const lastCategory = useRef(category);
   const { data, fetchNextPage, hasNextPage, isLoading, ...rest } =
     useInfiniteQuery({
+      // initialData: {
+      //   pages: [initialServices]
+      // },
       queryKey: [
         "services",
         searchQuery,

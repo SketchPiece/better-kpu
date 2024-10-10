@@ -6,6 +6,7 @@ import type { Service } from "@/lib/kpu-api/types";
 import type { QuickFiltersValue } from "@/components/home/quick-filters";
 
 interface QuickServicesProps {
+  initialQuickServices?: Record<QuickFiltersValue, Service[]>;
   quickFilter?: QuickFiltersValue;
   onServicesEmptyUpdate?: (data: Record<QuickFiltersValue, boolean>) => void;
 }
@@ -23,9 +24,11 @@ function defineServices(
 export function useQuickServices({
   quickFilter,
   onServicesEmptyUpdate,
+  initialQuickServices,
 }: QuickServicesProps) {
   const { preferences } = usePreferences();
   const { data: services, ...rest } = useQuery({
+    initialData: initialQuickServices,
     queryKey: ["services", preferences.roles.sort().join(",")],
     queryFn: () => apiClient.getQuickServices({ roles: preferences.roles }),
   });
