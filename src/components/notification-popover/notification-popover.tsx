@@ -1,4 +1,4 @@
-import type { ContentStructure, Notification } from "@/lib/kpu-api/types";
+import type { ContentStructure, SchoolNotification } from "@/lib/kpu-api/types";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -29,7 +29,7 @@ function NotificationCard({ title, content }: NotificationCardProps) {
 }
 
 interface NotificationsPopoverProps {
-  notifications?: Notification[];
+  notifications?: SchoolNotification[];
 }
 
 export default function NotificationsPopover({

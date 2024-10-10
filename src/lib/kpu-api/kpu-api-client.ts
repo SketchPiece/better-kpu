@@ -5,6 +5,7 @@ import type {
   UserProfile,
   // Notification,
   ApiClient,
+  SchoolNotification,
 } from "./types";
 import { refineService } from "./refine-service";
 import type { CategoryValue } from "../categories";
@@ -75,7 +76,7 @@ function mapTileToService(rawTile: unknown) {
   });
 }
 
-function mapNotification(rawNotification: unknown) {
+function mapNotification(rawNotification: unknown): SchoolNotification | null {
   const parseResult = notificationSchema.safeParse(rawNotification);
   if (!parseResult.success) return null;
   const notification = parseResult.data;
@@ -83,7 +84,7 @@ function mapNotification(rawNotification: unknown) {
     id: notification.announcementId,
     title: notification.title,
     description: notification.description,
-    content: parseHtmlString(notification.description),
+    content: parseHtmlString(notification.description) ?? [],
   };
 }
 
@@ -161,7 +162,6 @@ const kpuApiClient: ApiClient = {
     };
   },
   getQuickServices: async ({ roles }: { roles?: string[] } = {}) => {
-    console.log("fetch quick services");
     const response = await dangerousKpuApiInstance.post("/tasks", {
       pageNumber: 0,
       mobile: false,
@@ -182,8 +182,6 @@ const kpuApiClient: ApiClient = {
         ),
       })
       .parse(response.data);
-
-    console.log("data", rawCollectionData);
 
     const rawFeaturedTiles =
       rawCollectionData.taskCollections.find(
@@ -240,21 +238,18 @@ const kpuApiClient: ApiClient = {
     });
   },
   getNotifications: async () => {
-    const rawNotificationsData = await fetch(
+    console.log("get notifications");
+    const result = await dangerousKpuApiInstance.get(
       "https://one.kpu.ca/announcement/list?dismissed=false",
-      {
-        method: "GET",
-        ...commonOptions,
-      },
-    ).then((res) => res.json());
-    console.log(rawNotificationsData);
+    );
 
-    // const notifications: Notification[] = rawNotificationsData
-    //   .map(mapNotification)
-    //   .filter((notification: unknown) => notification !== null);
+    console.log(result.data);
+    const rawNotificationsData = z.array(z.unknown()).parse(result.data);
+    const notifications = rawNotificationsData
+      .map(mapNotification)
+      .filter((notification) => notification !== null);
 
-    // return notifications;
-    return [];
+    return notifications;
   },
 };
 

@@ -9,6 +9,7 @@ import ServiceCard from "./service-card";
 import { cn, resolveImageUrl } from "@/lib/utils";
 import type { Nullable } from "@/lib/types";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
+import { KPU_API_URL } from "@/lib/kpu-api/dangerous-kpu-api-instance";
 
 interface OtherServicesProps {
   searchQuery?: string;
@@ -88,7 +89,7 @@ export default function OtherServices({
                   image={resolveImageUrl(image)}
                   description={description}
                   favorite={favorite}
-                  href={`launch-task/all/${uniqueKey}`}
+                  href={`${KPU_API_URL}/launch-task/all/${uniqueKey}`}
                   onFavoriteChange={(favorite) =>
                     updateFavorite({ favorite, uid })
                   }

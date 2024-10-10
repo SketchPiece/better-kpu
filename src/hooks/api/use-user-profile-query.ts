@@ -17,7 +17,7 @@ export function useUserProfileQuery(initialUserProfile?: UserProfile) {
   });
 
   return {
-    data: initialUserProfile ?? refineUser(data),
+    data: refineUser(initialUserProfile ?? data),
     ...rest,
   };
 }

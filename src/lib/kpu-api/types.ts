@@ -21,7 +21,7 @@ export interface ApiClient {
   }>;
   getUserProfile: () => Promise<UserProfile | null>;
   updateFavorite: (params: UpdateFavorite) => Promise<void>;
-  getNotifications: () => Promise<Notification[]>;
+  getNotifications: () => Promise<SchoolNotification[]>;
 }
 
 export interface Service {
@@ -47,27 +47,22 @@ export interface UpdateFavorite {
   uid: string;
 }
 
-export interface Attribute {
-  class?: string;
-  style?: string;
-}
-
 export interface Child {
   type: string;
   value?: string;
-  attributes?: Attribute;
+  attributes?: Record<string, string>;
   children?: Child[];
 }
 
-export interface Element {
+export interface ObjectElement {
   type: string;
-  attributes?: Attribute;
+  attributes: Record<string, string>;
   children?: Child[];
 }
 
-export type ContentStructure = (Element | Child)[];
+export type ContentStructure = (ObjectElement | Child)[];
 
-export interface Notification {
+export interface SchoolNotification {
   id: number;
   title: string;
   description: string;

@@ -1,4 +1,8 @@
-import type { Child, ContentStructure, Element } from "@/lib/kpu-api/types";
+import type {
+  Child,
+  ContentStructure,
+  ObjectElement,
+} from "@/lib/kpu-api/types";
 import { Fragment } from "react/jsx-runtime";
 
 interface NotificationContentRendererProps {
@@ -6,7 +10,7 @@ interface NotificationContentRendererProps {
   showMore?: boolean;
 }
 
-const renderNode = (node: Child | Element): React.ReactNode => {
+const renderNode = (node: Child | ObjectElement): React.ReactNode => {
   const type = node.type.toLowerCase();
   if (type === "text") {
     return (node as Child)?.value;

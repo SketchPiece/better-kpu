@@ -22,7 +22,7 @@ export const kpuRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => kpuApiClient.getQuickServices(input)),
-  test: publicProcedure.query(() => {
-    return "hello";
-  }),
+  getNotifications: publicProcedure.query(() =>
+    kpuApiClient.getNotifications(),
+  ),
 });

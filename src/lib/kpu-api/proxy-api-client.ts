@@ -20,7 +20,7 @@ const proxyApiClient: ApiClient = {
     return;
   },
   getNotifications: async () => {
-    return [];
+    return trpcClient.kpu.getNotifications.query();
   },
 };
 

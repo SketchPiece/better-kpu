@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const KPU_API_URL = "https://one.kpu.ca";
+export const KPU_API_URL = "https://one.kpu.ca";
 
 const isServer: boolean = typeof window === "undefined";
 

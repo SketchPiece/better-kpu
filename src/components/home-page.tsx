@@ -28,7 +28,6 @@ export default function HomePage({ initialUserProfile }: HomePageProps) {
   } = usePreferences();
 
   const isAuthorized = Boolean(userProfile) && !isUserProfileLoading;
-  console.log("auth", isAuthorized);
   const {
     state,
     quickFiltersDisabledOptions,

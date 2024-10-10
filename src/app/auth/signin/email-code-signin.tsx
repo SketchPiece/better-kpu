@@ -10,11 +10,9 @@ export default function EmailCodeSignIn() {
   const [isVerificationStep, setIsVerificationStep] = useState(false);
 
   const handleCodeSubmit = (code: string) => {
-    console.log(code);
     const authCallback = `/api/auth/callback/email?email=${encodeURIComponent(
       email,
     )}&token=${code}&callbackUrl=/`;
-    console.log(authCallback);
     window.location.href = authCallback;
   };
 

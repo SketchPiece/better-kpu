@@ -35,7 +35,6 @@ async function getUserProfile(): Promise<UserProfile | undefined> {
 
 export default async function Home() {
   const userProfile = await getUserProfile();
-  console.log(userProfile);
 
   return <HomePage initialUserProfile={userProfile} />;
 }
