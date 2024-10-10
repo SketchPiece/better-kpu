@@ -2,7 +2,7 @@ import ServiceCardSkeleton from "./service-card-skeleton";
 import ServiceCard from "./service-card";
 import { resolveImageUrl } from "@/lib/utils";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
-import { Service } from "@/lib/kpu-api/types";
+import type { Service } from "@/lib/kpu-api/types";
 
 interface QuickServicesProps {
   services?: Service[];

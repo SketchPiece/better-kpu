@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ComponentProps, useState } from "react";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";

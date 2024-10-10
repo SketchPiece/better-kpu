@@ -1,4 +1,4 @@
-import { ContentStructure, Notification } from "@/lib/kpu-api/types";
+import type { ContentStructure, Notification } from "@/lib/kpu-api/types";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
