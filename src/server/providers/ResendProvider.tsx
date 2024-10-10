@@ -25,12 +25,13 @@ export function ResendCodeProvider({ apiKey, from }: ResendProviderOptions) {
       token,
       provider: { from },
     }) {
-      await resend.emails.send({
+      const emailResult = await resend.emails.send({
         from,
         to: email,
         subject: "Verify your email",
         react: <KpuVerifyIdentityEmail validationCode={token} />,
       });
+      console.log(emailResult);
     },
   });
 }
