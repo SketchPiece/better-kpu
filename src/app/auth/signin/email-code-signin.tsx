@@ -21,7 +21,7 @@ export default function EmailCodeSignIn() {
       email,
       redirect: false,
     });
-    if (result?.error) return console.log(result.error);
+    if (result?.error) return console.error("Error sending verification code");
   };
 
   const handleEmailSubmit = async (email: string) => {
