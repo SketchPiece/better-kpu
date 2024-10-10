@@ -1,11 +1,11 @@
 "use client";
 import { useCallback, useReducer, useState } from "react";
-import {
+import type {
   QuickFiltersDisabledOptions,
   QuickFiltersValue,
 } from "../quick-filters";
-import { CategoryValue } from "@/lib/categories";
-import { Nullable } from "@/lib/types";
+import type { CategoryValue } from "@/lib/categories";
+import type { Nullable } from "@/lib/types";
 
 type Action =
   | { type: "SET_QUICK_FILTER"; value: Nullable<QuickFiltersValue> }

@@ -1,5 +1,5 @@
 import HomePage from "@/components/home-page";
-import { UserProfile } from "@/lib/kpu-api/types";
+import type { UserProfile } from "@/lib/kpu-api/types";
 import { getServerAuthSession } from "@/server/auth";
 
 function capitalize(text: string) {

@@ -1,19 +1,19 @@
 import { z } from "zod";
-import {
+import type {
   Service,
   UpdateFavorite,
   UserProfile,
-  Notification,
+  // Notification,
   ApiClient,
 } from "./types";
 import { refineService } from "./refine-service";
-import { CategoryValue } from "../categories";
+import type { CategoryValue } from "../categories";
 import Cookies from "js-cookie";
 import { parseHtmlString } from "../utils";
 import { dangerousKpuApiInstance } from "./dangerous-kpu-api-instance";
 // import fetch from "node-fetch";
 
-const KPU_API_URL = "https://one.kpu.ca";
+// const KPU_API_URL = "https://one.kpu.ca";
 
 const commonOptions = {
   headers: {
@@ -53,7 +53,7 @@ type UserProfileData = z.infer<typeof userProfileDataSchema>;
 
 function mapUserProfile(userData: UserProfileData): UserProfile {
   return {
-    userId: userData.user.userId,
+    userId: userData.user.userId.toString(),
     email: userData.user.email,
     username: userData.user.userName,
     initials: userData.user.userInitials,

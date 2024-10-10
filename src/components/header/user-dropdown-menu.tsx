@@ -16,7 +16,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { QuickFiltersValue } from "../home/quick-filters";
+import type { QuickFiltersValue } from "../home/quick-filters";
 import SimpleTooltip from "../ui/simple-tooltip";
 import { useClipboard } from "@mantine/hooks";
 
@@ -62,7 +62,7 @@ export default function UserDropdownMenu({
   };
 
   const handleDefaultViewChange = (value: QuickFiltersValue) => {
-    updatePreference("defaultView", value as QuickFiltersValue);
+    updatePreference("defaultView", value);
     onDefaultViewChange?.(value);
   };
 

@@ -16,7 +16,7 @@ const proxyApiClient: ApiClient = {
   getUserProfile: async () => {
     return null;
   },
-  updateFavorite: async ({ uid, favorite }: UpdateFavorite) => {
+  updateFavorite: async (_: UpdateFavorite) => {
     return;
   },
   getNotifications: async () => {

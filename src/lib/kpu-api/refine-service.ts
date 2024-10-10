@@ -1,4 +1,4 @@
-import { Service } from "./types";
+import type { Service } from "./types";
 
 const defaultDescription =
   "Provides a wide range of resources and services to support various needs.";

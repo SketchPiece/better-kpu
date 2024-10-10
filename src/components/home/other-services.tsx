@@ -1,13 +1,13 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import ServiceCardSkeleton from "./service-card-skeleton";
 import { useServicesInfiniteQuery } from "@/hooks/api/use-services-infinite-query";
-import { CategoryValue, mapCategoryValueToName } from "@/lib/categories";
+import { type CategoryValue, mapCategoryValueToName } from "@/lib/categories";
 import { useQuickServices } from "@/hooks/api/use-quick-services";
-import { QuickFiltersValue } from "./quick-filters";
-import { Service } from "@/lib/kpu-api/types";
+import type { QuickFiltersValue } from "./quick-filters";
+import type { Service } from "@/lib/kpu-api/types";
 import ServiceCard from "./service-card";
 import { cn, resolveImageUrl } from "@/lib/utils";
-import { Nullable } from "@/lib/types";
+import type { Nullable } from "@/lib/types";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
 
 interface OtherServicesProps {

@@ -2,7 +2,6 @@ import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import SearchInput from "./search-input";
 import UserDropdownMenu from "./user-dropdown-menu";
-import { useUserProfileQuery } from "@/hooks/api/use-user-profile-query";
 import { useNotificationsQuery } from "@/hooks/api/use-notifications-query";
 import NotificationsPopover from "../notification-popover";
 import OneKpuLogo from "../one-kpu-logo";

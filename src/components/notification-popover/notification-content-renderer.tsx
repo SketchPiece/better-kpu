@@ -1,4 +1,4 @@
-import { Child, ContentStructure, Element } from "@/lib/kpu-api/types";
+import type { Child, ContentStructure, Element } from "@/lib/kpu-api/types";
 import { Fragment } from "react/jsx-runtime";
 
 interface NotificationContentRendererProps {
@@ -19,7 +19,7 @@ const renderNode = (node: Child | Element): React.ReactNode => {
   if (type === "p") {
     return (
       <p className="my-2 text-sm">
-        {node.children && node.children?.map((child) => renderNode(child))}
+        {node.children ? node.children.map((child) => renderNode(child)) : null}
       </p>
     );
   }
@@ -28,10 +28,11 @@ const renderNode = (node: Child | Element): React.ReactNode => {
 
   return (
     <Tag>
-      {node.children &&
-        node.children.map((child, index) => (
-          <Fragment key={index}>{renderNode(child)}</Fragment>
-        ))}
+      {node.children
+        ? node.children.map((child, index) => (
+            <Fragment key={index}>{renderNode(child)}</Fragment>
+          ))
+        : null}
     </Tag>
   );
 };
@@ -50,5 +51,6 @@ export default function NotificationContentRenderer({
     );
   }
   const node = content[0];
+  if (!node) return null;
   return renderNode(node);
 }
