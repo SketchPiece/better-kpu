@@ -26,7 +26,6 @@ export default function EmailCodeSignIn() {
 
   const handleEmailSubmit = async (email: string) => {
     setEmail(email);
-    setIsVerificationStep(true);
     await sendVerificationCode();
     setIsVerificationStep(true);
   };
