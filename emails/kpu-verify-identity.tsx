@@ -4,8 +4,8 @@ import {
   Head,
   Heading,
   Html,
-  Img,
-  Link,
+  // Img,
+  // Link,
   Section,
   Text,
 } from "@react-email/components";
@@ -15,9 +15,9 @@ interface KpuVerifyIdentityEmailProps {
   validationCode?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
+// const baseUrl = process.env.VERCEL_URL
+//   ? `https://${process.env.VERCEL_URL}`
+//   : "";
 
 export const KpuVerifyIdentityEmail = ({
   validationCode,
@@ -26,12 +26,12 @@ export const KpuVerifyIdentityEmail = ({
     <Head />
     <Body style={main}>
       <Container style={container}>
-        <Img
+        {/* <Img
           src={`${baseUrl}/static/better-kpu-logo.png`}
           height="88"
           alt="Better KPU"
           style={logo}
-        />
+        /> */}
         <Text style={tertiary}>Verify Your Identity</Text>
         <Text style={heading}>Welcome to Better KPU</Text>
         <Heading style={secondary}>Enter the following code</Heading>
