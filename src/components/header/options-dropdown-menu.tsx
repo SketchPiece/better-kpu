@@ -56,7 +56,7 @@ export default function OptionsDropdownMenu({
         }}
       >
         <DropdownMenuLabel className="flex flex-col">
-          <span className="font-medium">Settings</span>
+          <span className="font-medium">Preferences</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
