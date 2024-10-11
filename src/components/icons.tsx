@@ -22,6 +22,8 @@ import {
   Moon,
   MonitorSmartphone,
   Inbox,
+  Settings,
+  Coffee,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -33,6 +35,7 @@ export const Icons = {
   filters: Settings2,
   logout: LogOut,
   feedback: MessageCircle,
+  coffee: Coffee,
   roles: UserCog,
   login: LogIn,
   briefcaseBusiness: BriefcaseBusiness,
@@ -48,6 +51,7 @@ export const Icons = {
   system: MonitorSmartphone,
   starOutline: Star,
   inbox: Inbox,
+  settings: Settings,
   star: (props: LucideProps) => (
     <svg
       width="24"

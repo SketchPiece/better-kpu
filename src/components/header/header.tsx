@@ -8,6 +8,7 @@ import OneKpuLogo from "../one-kpu-logo";
 import type { QuickFiltersValue } from "../home/quick-filters";
 import useAuthentication from "@/hooks/use-authentication";
 import type { UserProfile } from "@/lib/kpu-api/types";
+import OptionsDropdownMenu from "./options-dropdown-menu";
 
 interface HeaderProps {
   searchQuery?: string;
@@ -56,9 +57,13 @@ export default function Header({
             />
           </>
         ) : (
-          <Button variant="ghost" onClick={signIn}>
-            <Icons.login className="mr-2" /> Sign In
-          </Button>
+          <>
+            <NotificationsPopover notifications={notifications} />
+            <OptionsDropdownMenu />
+            <Button variant="ghost" onClick={signIn}>
+              <Icons.login className="mr-2" /> Sign In
+            </Button>
+          </>
         )}
       </div>
     </header>

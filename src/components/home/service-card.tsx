@@ -15,6 +15,7 @@ interface ServiceCardProps extends ComponentProps<"a"> {
 }
 
 function isDevMode() {
+  if (typeof window === "undefined") return false;
   const url = new URL(window.location.href);
   return url.searchParams.get("dev") === "true";
 }

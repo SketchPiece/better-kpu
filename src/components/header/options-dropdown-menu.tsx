@@ -1,6 +1,6 @@
 import { usePreferences } from "@/hooks/use-preferences";
 import { Icons } from "../icons";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -16,28 +16,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import type { QuickFiltersValue } from "../home/quick-filters";
-import SimpleTooltip from "../ui/simple-tooltip";
-import { useClipboard } from "@mantine/hooks";
 import { excludeValue, includeValue } from "./helpers";
 
-interface UserDropdownMenuProps {
-  initials: string;
-  username: string;
-  email: string;
-  onDefaultViewChange?: (value: QuickFiltersValue) => void;
-  onSignOut?: () => void;
-}
-
-export default function UserDropdownMenu({
-  initials,
-  username,
-  email,
-  onDefaultViewChange,
-  onSignOut,
-}: UserDropdownMenuProps) {
+export default function OptionsDropdownMenu() {
   const { preferences, updatePreference } = usePreferences();
-  const clipboard = useClipboard({ timeout: 2000 });
 
   const handleRoleCheckboxChange = (
     role: "student" | "employee",
@@ -51,23 +33,12 @@ export default function UserDropdownMenu({
     );
   };
 
-  const handleDefaultViewChange = (value: QuickFiltersValue) => {
-    updatePreference("defaultView", value);
-    onDefaultViewChange?.(value);
-  };
-
-  const copyEmailContent = clipboard.copied
-    ? "Copied to your clipboard"
-    : "Click to copy email address";
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:ring-offset-dark-background">
-          <Avatar>
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-        </button>
+        <Button variant="ghost" size="icon">
+          <Icons.settings className="h-6 w-6" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
@@ -79,51 +50,9 @@ export default function UserDropdownMenu({
         }}
       >
         <DropdownMenuLabel className="flex flex-col">
-          <span className="font-medium">{username}</span>
-          <SimpleTooltip
-            content={copyEmailContent}
-            side="bottom"
-            open={clipboard.copied ? true : undefined}
-          >
-            <button onClick={() => clipboard.copy(email)} className="text-sm">
-              {email}
-            </button>
-          </SimpleTooltip>
+          <span className="font-medium">Settings</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <Icons.eye className="mr-2" />
-            <span>Default View</span>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuLabel className="px-3 py-2.5 font-medium">
-                Select Default View
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup
-                value={preferences.defaultView}
-                onValueChange={(value) =>
-                  handleDefaultViewChange(value as QuickFiltersValue)
-                }
-              >
-                <DropdownMenuRadioItem value="essentials">
-                  <Icons.circleCheck className="mr-2" />
-                  Essentials
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="favorites">
-                  <Icons.starOutline className="mr-2" />
-                  Favorites
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="recents">
-                  <Icons.history className="mr-2" />
-                  Recents
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Icons.roles className="mr-2" />
@@ -197,9 +126,6 @@ export default function UserDropdownMenu({
             <Icons.coffee className="mr-2" />
             <span>Buy me a Coffee</span>
           </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={onSignOut}>
-          <Icons.logout className="mr-2" /> Logout
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuLabel className="flex justify-around">
