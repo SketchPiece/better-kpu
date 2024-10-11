@@ -64,7 +64,7 @@ export default function OtherServices({
     <>
       <h2
         className={cn(
-          "text-3xl font-medium",
+          "text-2xl font-medium lg:text-3xl",
           increaseMargin ? "mt-12" : "mt-6",
         )}
       >

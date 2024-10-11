@@ -14,6 +14,7 @@ import QuickServices from "./home/quick-services";
 import OtherServices from "./home/other-services";
 import ScrollToTopButton from "./scroll-to-top-button";
 import type { Service, UserProfile } from "@/lib/kpu-api/types";
+import SearchInput from "./header/search-input";
 
 interface HomePageProps {
   initialUserProfile?: UserProfile;
@@ -68,20 +69,27 @@ export default function HomePage({
           isLoading: isUserProfileLoading,
         }}
       />
-      <main className="mt-4 px-6 md:mt-8">
-        <div className="flex flex-col justify-between md:flex-row">
+      <main className="mt-0 px-6 lg:mt-8">
+        <div className="flex flex-col justify-between lg:flex-row">
+          <SearchInput
+            value={state.searchQuery}
+            onChange={(e) => handleSearchQueryChange(e.target.value)}
+            mobile
+          />
           <Greeting name={userProfile?.greetingName} />
-          <div className="hidden items-center gap-4 md:flex">
-            <QuickFilters
-              value={state.selectedQuickFilter}
-              onChange={handleQuickFilterChange}
-              disabledOptions={quickFiltersDisabledOptions}
-            />
-            <Separator orientation="vertical" className="h-8" />
-            <CategoriesFilterDialog
-              value={state.selectedCategory}
-              onChange={handleCategoryChange}
-            />
+          <div className="w-full overflow-x-auto pb-3 sm:w-auto sm:pb-0">
+            <div className="mt-2 flex w-full flex-row-reverse items-center justify-end gap-2 sm:w-auto sm:flex-row sm:justify-start sm:gap-4 lg:mt-0">
+              <QuickFilters
+                value={state.selectedQuickFilter}
+                onChange={handleQuickFilterChange}
+                disabledOptions={quickFiltersDisabledOptions}
+              />
+              <Separator orientation="vertical" className="h-8" />
+              <CategoriesFilterDialog
+                value={state.selectedCategory}
+                onChange={handleCategoryChange}
+              />
+            </div>
           </div>
         </div>
         {showQuickServices && (

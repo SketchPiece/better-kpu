@@ -3,6 +3,7 @@ import ServiceCard from "./service-card";
 import { resolveImageUrl } from "@/lib/utils";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
 import type { Service } from "@/lib/kpu-api/types";
+import { KPU_API_URL } from "@/lib/kpu-api/dangerous-kpu-api-instance";
 
 interface QuickServicesProps {
   services?: Service[];
@@ -29,7 +30,7 @@ export default function QuickServices({
               image={resolveImageUrl(image)}
               description={description}
               favorite={favorite}
-              href={`launch-task/all/${uniqueKey}`}
+              href={`${KPU_API_URL}/launch-task/all/${uniqueKey}`}
               onFavoriteChange={(favorite) => updateFavorite({ favorite, uid })}
             />
           ),

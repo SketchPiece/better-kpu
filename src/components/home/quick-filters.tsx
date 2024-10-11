@@ -49,7 +49,7 @@ export default function QuickFilters({
   }, [value, selectedValue]);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2 sm:gap-4">
       <SimpleTooltip
         content={disabledOptions?.essentials?.label ?? "Disabled"}
         disabled={!disabledOptions?.essentials?.disabled}
@@ -60,13 +60,13 @@ export default function QuickFilters({
             !disabledOptions?.essentials?.disabled && handleClick("essentials")
           }
           className={cn(
-            "focus:ring-primary dark:ring-offset-dark-background inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[#EFEFEF] px-4 py-2.5 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50",
+            "inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[#EFEFEF] px-2.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 sm:px-4 sm:py-2.5 sm:text-base dark:ring-offset-dark-background",
             selectedValue === "essentials"
               ? "border-primary bg-primary text-white"
               : "hover:bg-[#F5F5F5] dark:border-[#3D3D3D] dark:hover:bg-[#1E1E1E]",
           )}
         >
-          <Icons.circleCheck className="mr-2" />
+          <Icons.circleCheck className="mr-1.5 h-5 sm:mr-2" />
           Essentials
         </button>
       </SimpleTooltip>
@@ -81,7 +81,7 @@ export default function QuickFilters({
             !disabledOptions?.favorites?.disabled && handleClick("favorites")
           }
           className={cn(
-            "focus:ring-primary dark:ring-offset-dark-background inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[#EFEFEF] px-4 py-2.5 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50",
+            "border-[#EFEFEF borderpx-3 inline-flex items-center justify-center whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 sm:px-4 sm:py-2.5 dark:ring-offset-dark-background",
             selectedValue === "favorites"
               ? "border-primary bg-primary text-white"
               : "hover:bg-[#F5F5F5] dark:border-[#3D3D3D] dark:hover:bg-[#1E1E1E]",
@@ -102,7 +102,7 @@ export default function QuickFilters({
             !disabledOptions?.recents?.disabled && handleClick("recents")
           }
           className={cn(
-            "focus:ring-primary dark:ring-offset-dark-background inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[#EFEFEF] px-4 py-2.5 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50",
+            "border-[#EFEFEF borderpx-3 inline-flex items-center justify-center whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 sm:px-4 sm:py-2.5 dark:ring-offset-dark-background",
             selectedValue === "recents"
               ? "border-primary bg-primary text-white"
               : "hover:bg-[#F5F5F5] dark:border-[#3D3D3D] dark:hover:bg-[#1E1E1E]",

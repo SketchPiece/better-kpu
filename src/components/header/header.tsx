@@ -39,6 +39,7 @@ export default function Header({
           <OneKpuLogo />
         </a>
       </div>
+
       <SearchInput
         value={searchQuery}
         onChange={(e) => onSearchQueryChange?.(e.target.value)}
@@ -59,8 +60,12 @@ export default function Header({
         ) : (
           <>
             <NotificationsPopover notifications={notifications} />
-            <OptionsDropdownMenu />
-            <Button variant="ghost" onClick={signIn}>
+            <OptionsDropdownMenu onSignIn={signIn} />
+            <Button
+              variant="ghost"
+              onClick={signIn}
+              className="hidden md:inline-flex"
+            >
               <Icons.login className="mr-2" /> Sign In
             </Button>
           </>

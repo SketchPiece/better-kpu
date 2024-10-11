@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icons } from "../icons";
 import { cn } from "@/lib/utils";
 
-type SearchInputProps = ComponentProps<"input">;
+interface SearchInputProps extends ComponentProps<"input"> {
+  mobile?: boolean;
+}
 
 interface KbdProps extends ComponentProps<"kbd"> {
   modKey: "command" | "ctrl";
@@ -35,7 +37,7 @@ function Kbd({ modKey, children, className, ...props }: KbdProps) {
   );
 }
 
-export default function SearchInput(props: SearchInputProps) {
+export default function SearchInput({ mobile, ...props }: SearchInputProps) {
   const os = useOs();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -49,20 +51,25 @@ export default function SearchInput(props: SearchInputProps) {
   }, []);
 
   return (
-    <div className="relative hidden md:block">
-      <Icons.search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 md:left-6 md:h-6 md:w-6" />
+    <div
+      className={cn(
+        "relative",
+        mobile ? "mb-4 block lg:hidden" : "hidden lg:block",
+      )}
+    >
+      <Icons.search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 lg:h-6 lg:w-6" />
       <input
         ref={searchInputRef}
         type="text"
         placeholder="Search for service..."
-        className="w-[37.5rem] rounded-full border-none bg-gray-100 px-6 py-3.5 pl-16 font-medium transition-all placeholder:text-[#989898] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:bg-[#2E2E2E] dark:placeholder:text-[#747474] dark:focus:ring-offset-dark-background"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        className="w-full rounded-full border-none bg-gray-100 px-6 py-3 pl-11 text-sm font-medium transition-all placeholder:text-[#989898] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:py-3.5 lg:w-[37.5rem] lg:pl-16 lg:text-base dark:bg-[#2E2E2E] dark:placeholder:text-[#747474] dark:focus:ring-offset-dark-background"
         {...props}
       />
 
       <AnimatePresence>
-        {!isFocused && (
+        {!isFocused && !mobile && (
           <motion.div
             key="kbd-focus"
             initial={{ opacity: 0 }}

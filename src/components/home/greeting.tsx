@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { ComponentProps, useEffect, useState } from "react";
 
-interface GreetingProps {
+interface GreetingProps extends ComponentProps<"h1"> {
   name?: string;
 }
 
@@ -21,14 +22,21 @@ function defineGreeting(name?: string): string {
   return greet;
 }
 
-function Greeting({ name }: GreetingProps): JSX.Element {
+function Greeting({ name, className, ...props }: GreetingProps): JSX.Element {
   const [greeting, setGreeting] = useState("");
 
   useEffect(() => {
     setGreeting(defineGreeting(name));
   }, [name]);
 
-  return <h1 className="text-3xl font-medium md:text-4xl">{greeting}</h1>;
+  return (
+    <h1
+      className={cn("text-2xl font-medium sm:text-3xl md:text-4xl", className)}
+      {...props}
+    >
+      {greeting}
+    </h1>
+  );
 }
 
 export default Greeting;

@@ -48,7 +48,7 @@ export default function NotificationsPopover({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="relative right-20 w-fit max-w-md">
+      <PopoverContent className="relative right-20 w-fit max-w-[92vw] translate-x-16 sm:max-w-md sm:translate-x-0">
         <div className="">
           <div className="">
             <div className="p-4">

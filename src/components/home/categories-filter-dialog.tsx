@@ -25,7 +25,7 @@ interface CategoryButtonProps extends ComponentProps<"button"> {
 function CategoryButton({ name, icon, items, ...props }: CategoryButtonProps) {
   return (
     <button
-      className="focus-visible:ring-primary flex items-center rounded-lg p-2 transition-all hover:bg-[#F9F9F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:hover:bg-[#2E2E2E]"
+      className="flex items-center rounded-lg p-2 transition-all hover:bg-[#F9F9F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:hover:bg-[#2E2E2E]"
       {...props}
     >
       <span className="flex items-center gap-2">
@@ -72,27 +72,36 @@ export default function CategoriesFilterDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {selectedCategory ? (
-          <Button variant="default" size="lg">
-            <selectedCategory.icon className="mr-2" /> {selectedCategory.name}
+          <Button
+            variant="default"
+            size="lg"
+            className="px-2.5 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base"
+          >
+            <selectedCategory.icon className="mr-1.5 h-5 sm:mr-2" />{" "}
+            {selectedCategory.name}
             <Icons.darkClose
               className="ml-2 h-5 w-5 hover:opacity-80"
               onClick={handleCategoryClear}
             />
           </Button>
         ) : (
-          <Button variant="secondary" size="lg">
-            <Icons.filters className="mr-2" /> Filters
+          <Button
+            variant="secondary"
+            size="lg"
+            className="px-2.5 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base"
+          >
+            <Icons.filters className="mr-1.5 h-5 sm:mr-2" /> Filters
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-4xl">
+      <DialogContent className="max-h-screen max-w-4xl">
         <DialogHeader>
           <DialogTitle>Categories</DialogTitle>
           <DialogDescription>
             Select category to filter university services
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-3 gap-x-4 gap-y-2">
+        <div className="grid max-h-screen gap-x-4 gap-y-2 overflow-y-auto md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <CategoryButton
               key={category.name}

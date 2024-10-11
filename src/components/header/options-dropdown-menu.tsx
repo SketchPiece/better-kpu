@@ -18,7 +18,13 @@ import {
 } from "../ui/dropdown-menu";
 import { excludeValue, includeValue } from "./helpers";
 
-export default function OptionsDropdownMenu() {
+interface OptionsDropdownMenuProps {
+  onSignIn?: () => void;
+}
+
+export default function OptionsDropdownMenu({
+  onSignIn,
+}: OptionsDropdownMenuProps) {
   const { preferences, updatePreference } = usePreferences();
 
   const handleRoleCheckboxChange = (
@@ -126,6 +132,9 @@ export default function OptionsDropdownMenu() {
             <Icons.coffee className="mr-2" />
             <span>Buy me a Coffee</span>
           </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onSignIn} className="md:hidden">
+          <Icons.login className="mr-2" /> Sign In
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuLabel className="flex justify-around">
