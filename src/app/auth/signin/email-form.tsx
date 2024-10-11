@@ -9,9 +9,10 @@ import { useInput, useSubmit } from "./helpers";
 interface EmailFormProps {
   defaultEmail?: string;
   onSubmit?: (email: string) => void;
+  emailPending?: boolean;
 }
 
-export default function EmailForm({ defaultEmail, onSubmit }: EmailFormProps) {
+export default function EmailForm({ defaultEmail, onSubmit, emailPending }: EmailFormProps) {
   const [email, inputProps] = useInput(defaultEmail);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -51,7 +52,7 @@ export default function EmailForm({ defaultEmail, onSubmit }: EmailFormProps) {
           )}
         </div>
         <div className="mt-5">
-          <Button variant="default" className="w-full" type="submit">
+          <Button variant="default" className="w-full" type="submit" disabled={emailPending}>
             Continue
           </Button>
           <p className="mt-2 text-center text-xs text-[#888888]">

@@ -17,7 +17,7 @@ export function ResendCodeProvider({ apiKey, from }: ResendProviderOptions) {
   return EmailProvider({
     from,
     maxAge: 5 * 60,
-    generateVerificationToken: async () => {
+    generateVerificationToken: () => {
       return generateAuthCode();
     },
     async sendVerificationRequest({
@@ -25,13 +25,19 @@ export function ResendCodeProvider({ apiKey, from }: ResendProviderOptions) {
       token,
       provider: { from },
     }) {
-      const emailResult = await resend.emails.send({
-        from,
-        to: email,
-        subject: "Verify your email",
-        react: <KpuVerifyIdentityEmail validationCode={token} />,
-      });
-      console.log(emailResult);
+      console.log("Sending verification email");
+      try {
+        const emailResult = await resend.emails.send({
+          from,
+          to: email,
+          subject: "Verify your email",
+          react: <KpuVerifyIdentityEmail validationCode={token} />,
+        });
+        console.log(emailResult);
+      } catch (error) {
+        console.error("Error sending verification email", error);
+        throw error;
+      }
     },
   });
 }

@@ -52,7 +52,7 @@ export default function ServiceCard({
         className="h-20 w-20 rounded-full border border-[#F0F0F0] object-cover dark:border-[#2E2E2E]"
       />
       <div className="flex flex-1 flex-col">
-        <h3 className="font-medium sm:text-lg">{title}</h3>
+        <h2 className="font-medium sm:text-lg">{title}</h2>
         <p className="text-xs text-black/70 sm:text-sm dark:text-white/70">
           {description}
         </p>

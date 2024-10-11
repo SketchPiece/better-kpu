@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import CodeForm from "./code-form";
 import EmailForm from "./email-form";
+import { useMutation } from "@tanstack/react-query";
 
 export default function EmailCodeSignIn() {
   const [email, setEmail] = useState("");
@@ -16,19 +17,23 @@ export default function EmailCodeSignIn() {
     window.location.href = authCallback;
   };
 
-  const sendVerificationCode = async () => {
+  const sendVerificationCode = async (emailParam?: string) => {
     const result = await signIn("email", {
-      email,
+      email: emailParam ?? email,
       redirect: false,
     });
-    if (result?.error) return console.error("Error sending verification code");
+    if (result?.error)
+      return console.error("Error sending verification code", result);
   };
 
-  const handleEmailSubmit = async (email: string) => {
-    setEmail(email);
-    await sendVerificationCode();
-    setIsVerificationStep(true);
-  };
+  const { mutate: handleEmailSubmit, isPending } = useMutation({
+    mutationFn: async (email: string) => {
+      if (isPending) return;
+      setEmail(email);
+      await sendVerificationCode(email);
+      setIsVerificationStep(true);
+    },
+  });
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -45,6 +50,7 @@ export default function EmailCodeSignIn() {
           key="email"
           defaultEmail={email}
           onSubmit={handleEmailSubmit}
+          emailPending={isPending}
         />
       )}
     </AnimatePresence>
