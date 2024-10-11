@@ -12,7 +12,11 @@ interface EmailFormProps {
   emailPending?: boolean;
 }
 
-export default function EmailForm({ defaultEmail, onSubmit, emailPending }: EmailFormProps) {
+export default function EmailForm({
+  defaultEmail,
+  onSubmit,
+  emailPending,
+}: EmailFormProps) {
   const [email, inputProps] = useInput(defaultEmail);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -20,10 +24,10 @@ export default function EmailForm({ defaultEmail, onSubmit, emailPending }: Emai
     const emailParseResult = z
       .string()
       .email("Please enter a valid email address")
-      // .refine((email) => email.endsWith("kpu.ca"), {
-      //   message:
-      //     "Please enter a valid email address ending with @student.kpu.ca, or @kpu.ca if you’re a professor.",
-      // })
+      .refine((email) => email.endsWith("kpu.ca"), {
+        message:
+          "Please enter a valid email address ending with @student.kpu.ca, or @kpu.ca if you’re a professor.",
+      })
       .safeParse(email);
     if (!emailParseResult.success)
       return setErrorMessage(emailParseResult.error.issues[0]?.message ?? "");
@@ -52,7 +56,12 @@ export default function EmailForm({ defaultEmail, onSubmit, emailPending }: Emai
           )}
         </div>
         <div className="mt-5">
-          <Button variant="default" className="w-full" type="submit" disabled={emailPending}>
+          <Button
+            variant="default"
+            className="w-full"
+            type="submit"
+            disabled={emailPending}
+          >
             Continue
           </Button>
           <p className="mt-2 text-center text-xs text-[#888888]">

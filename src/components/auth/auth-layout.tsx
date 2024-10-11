@@ -8,7 +8,7 @@ type AuthLayoutProps = PropsWithChildren;
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="relative flex min-h-screen">
+    <div className="relative flex h-dvh">
       <Image
         src={authBackground}
         alt="Background"
