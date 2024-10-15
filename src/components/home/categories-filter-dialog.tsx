@@ -75,7 +75,7 @@ export default function CategoriesFilterDialog({
           <Button
             variant="default"
             size="lg"
-            className="px-2.5 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base"
+            className="px-2.5 py-2 text-sm md:px-4 md:py-2.5 md:text-base"
           >
             <selectedCategory.icon className="mr-1.5 h-5 sm:mr-2" />{" "}
             {selectedCategory.name}
@@ -88,13 +88,13 @@ export default function CategoriesFilterDialog({
           <Button
             variant="secondary"
             size="lg"
-            className="px-2.5 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base"
+            className="px-2.5 py-2 text-sm md:px-4 md:py-2.5 md:text-base"
           >
-            <Icons.filters className="mr-1.5 h-5 sm:mr-2" /> Filters
+            <Icons.filters className="mr-1.5 h-5 sm:mr-2" /> Categories
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-h-screen max-w-4xl">
+      <DialogContent className="max-h-dvh max-w-4xl">
         <DialogHeader>
           <DialogTitle>Categories</DialogTitle>
           <DialogDescription>

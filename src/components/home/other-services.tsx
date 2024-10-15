@@ -9,13 +9,13 @@ import ServiceCard from "./service-card";
 import { cn, resolveImageUrl } from "@/lib/utils";
 import type { Nullable } from "@/lib/types";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
-import { KPU_API_URL } from "@/lib/kpu-api/dangerous-kpu-api-instance";
 
 interface OtherServicesProps {
   searchQuery?: string;
   category?: Nullable<CategoryValue>;
   quickFilter: Nullable<QuickFiltersValue>;
   initialServices?: Service[];
+  allowFavorite?: boolean;
 }
 
 function defineHeading(searchQuery?: string, category?: CategoryValue) {
@@ -33,6 +33,7 @@ export default function OtherServices({
   category,
   quickFilter,
   initialServices,
+  allowFavorite,
 }: OtherServicesProps) {
   const {
     data: otherServices,
@@ -64,7 +65,7 @@ export default function OtherServices({
     <>
       <h2
         className={cn(
-          "text-2xl font-medium lg:text-3xl",
+          "ml-1 text-2xl font-medium lg:text-3xl",
           increaseMargin ? "mt-12" : "mt-6",
         )}
       >
@@ -77,7 +78,7 @@ export default function OtherServices({
           </div>
         ) : (
           <InfiniteScroll
-            className="relative my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+            className="relative my-5 grid grid-cols-1 gap-4 p-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
             dataLength={otherServicesFiltered.length}
             next={fetchNextPage}
             hasMore={hasNextPage}
@@ -92,10 +93,11 @@ export default function OtherServices({
                   image={resolveImageUrl(image)}
                   description={description}
                   favorite={favorite}
-                  href={`${KPU_API_URL}/launch-task/all/${uniqueKey}`}
+                  href={`/launch-task/all/${uid}`}
                   onFavoriteChange={(favorite) =>
                     updateFavorite({ favorite, uid })
                   }
+                  allowFavorite={allowFavorite}
                 />
               ),
             )}

@@ -12,6 +12,7 @@ interface ServiceCardProps extends ComponentProps<"a"> {
   image: string;
   favorite?: boolean;
   onFavoriteChange?: (favorite: boolean) => void;
+  allowFavorite?: boolean;
 }
 
 function isDevMode() {
@@ -27,9 +28,9 @@ export default function ServiceCard({
   image,
   favorite,
   onFavoriteChange,
+  allowFavorite,
   ...props
 }: ServiceCardProps) {
-  const { data: userProfile } = useUserProfileQuery();
   const [isFavorite, setIsFavorite] = useState(favorite);
 
   const handleFavoriteChange = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,7 +58,7 @@ export default function ServiceCard({
           {description}
         </p>
       </div>
-      {userProfile && (
+      {allowFavorite && (
         <Button
           tabIndex={-1}
           variant="ghost"

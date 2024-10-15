@@ -15,6 +15,7 @@ import OtherServices from "./home/other-services";
 import ScrollToTopButton from "./scroll-to-top-button";
 import type { Service, UserProfile } from "@/lib/kpu-api/types";
 import SearchInput from "./header/search-input";
+import { maybe } from "@/lib/utils";
 
 interface HomePageProps {
   initialUserProfile?: UserProfile;
@@ -33,7 +34,10 @@ export default function HomePage({
     preferences: { defaultView },
   } = usePreferences();
 
-  const isAuthorized = Boolean(userProfile) && !isUserProfileLoading;
+  const isAuthorized =
+    (Boolean(userProfile) && !isUserProfileLoading) ||
+    Boolean(initialUserProfile);
+
   const {
     state,
     quickFiltersDisabledOptions,
@@ -64,13 +68,10 @@ export default function HomePage({
         searchQuery={state.searchQuery}
         onDefaultViewChange={handleDefaultViewChange}
         onSearchQueryChange={handleSearchQueryChange}
-        userProfile={{
-          data: userProfile,
-          isLoading: isUserProfileLoading,
-        }}
+        userProfile={maybe(userProfile)}
       />
-      <main className="mt-0 px-6 lg:mt-8">
-        <div className="flex flex-col justify-between lg:flex-row">
+      <main className="mt-0 px-5 lg:mt-8">
+        <div className="flex flex-col justify-between lg:flex-row lg:items-center">
           <SearchInput
             value={state.searchQuery}
             onChange={(e) => handleSearchQueryChange(e.target.value)}
@@ -78,11 +79,12 @@ export default function HomePage({
           />
           <Greeting name={userProfile?.greetingName} />
           <div className="w-full overflow-x-auto pb-3 sm:w-auto sm:pb-0">
-            <div className="mt-2 flex w-full flex-row-reverse items-center justify-end gap-2 sm:w-auto sm:flex-row sm:justify-start sm:gap-4 lg:mt-0">
+            <div className="mt-2 flex w-full flex-row-reverse items-center justify-end gap-2 p-1 sm:w-auto sm:flex-row sm:justify-start sm:gap-4 lg:mt-0">
               <QuickFilters
                 value={state.selectedQuickFilter}
                 onChange={handleQuickFilterChange}
                 disabledOptions={quickFiltersDisabledOptions}
+                authorized={isAuthorized}
               />
               <Separator orientation="vertical" className="h-8" />
               <CategoriesFilterDialog
@@ -96,12 +98,14 @@ export default function HomePage({
           <QuickServices
             services={quickServices}
             loading={isQuickServicesLoading}
+            allowFavorite={isAuthorized}
           />
         )}
         <OtherServices
           searchQuery={debouncedSearchQuery}
           category={state.selectedCategory}
           quickFilter={state.selectedQuickFilter}
+          allowFavorite={isAuthorized}
         />
       </main>
       <ScrollToTopButton />

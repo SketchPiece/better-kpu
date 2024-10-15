@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 interface GreetingProps extends ComponentProps<"h1"> {
   name?: string;
@@ -27,7 +27,10 @@ function Greeting({ name, className, ...props }: GreetingProps): JSX.Element {
 
   return (
     <h1
-      className={cn("text-2xl font-medium sm:text-3xl md:text-4xl", className)}
+      className={cn(
+        "ml-1 text-2xl font-medium md:text-3xl lg:text-4xl",
+        className,
+      )}
       {...props}
     >
       {greeting}

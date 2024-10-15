@@ -25,7 +25,6 @@ export function ResendCodeProvider({ apiKey, from }: ResendProviderOptions) {
       token,
       provider: { from },
     }) {
-      console.log("Sending verification email");
       try {
         const emailResult = await resend.emails.send({
           from,
@@ -33,7 +32,6 @@ export function ResendCodeProvider({ apiKey, from }: ResendProviderOptions) {
           subject: "Verify your email",
           react: <KpuVerifyIdentityEmail validationCode={token} />,
         });
-        console.log(emailResult);
       } catch (error) {
         console.error("Error sending verification email", error);
         throw error;

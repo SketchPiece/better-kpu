@@ -31,6 +31,7 @@ export function useQuickServices({
     initialData: initialQuickServices,
     queryKey: ["services", preferences.roles.sort().join(",")],
     queryFn: () => apiClient.getQuickServices({ roles: preferences.roles }),
+    refetchOnWindowFocus: "always",
   });
 
   useEffect(() => {

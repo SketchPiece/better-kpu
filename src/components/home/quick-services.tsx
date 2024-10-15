@@ -3,21 +3,22 @@ import ServiceCard from "./service-card";
 import { resolveImageUrl } from "@/lib/utils";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
 import type { Service } from "@/lib/kpu-api/types";
-import { KPU_API_URL } from "@/lib/kpu-api/dangerous-kpu-api-instance";
 
 interface QuickServicesProps {
   services?: Service[];
   loading?: boolean;
+  allowFavorite?: boolean;
 }
 
 export default function QuickServices({
   services,
   loading,
+  allowFavorite,
 }: QuickServicesProps) {
   const { mutate: updateFavorite } = useFavoriteMutation();
 
   return (
-    <div className="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div className="my-5 grid grid-cols-1 gap-4 p-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {loading ? (
         <ServiceCardSkeleton amount={8} />
       ) : (
@@ -30,8 +31,9 @@ export default function QuickServices({
               image={resolveImageUrl(image)}
               description={description}
               favorite={favorite}
-              href={`${KPU_API_URL}/launch-task/all/${uniqueKey}`}
+              href={`/launch-task/all/${uid}`}
               onFavoriteChange={(favorite) => updateFavorite({ favorite, uid })}
+              allowFavorite={allowFavorite}
             />
           ),
         )
