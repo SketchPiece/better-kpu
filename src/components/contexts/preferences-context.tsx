@@ -1,5 +1,4 @@
 "use client";
-import { useUserProfileQuery } from "@/hooks/api/use-user-profile-query";
 import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useContext } from "react";
 import { z } from "zod";

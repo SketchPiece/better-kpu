@@ -9,9 +9,7 @@ import {
 import { formAnimationProps } from "./form-animation";
 import { useInput, useSubmit } from "./helpers";
 import SimpleTooltip from "@/components/ui/simple-tooltip";
-import { useState } from "react";
 import useCooldown from "@/hooks/use-cooldown";
-import { useTimeout } from "@mantine/hooks";
 
 interface CodeFormProps {
   onSubmit?: (code: string) => void;

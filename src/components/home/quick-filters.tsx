@@ -3,7 +3,6 @@ import { Icons } from "../icons";
 import { cn } from "@/lib/utils";
 import type { Nullable } from "@/lib/types";
 import SimpleTooltip from "../ui/simple-tooltip";
-import { useUserProfileQuery } from "@/hooks/api/use-user-profile-query";
 
 export type QuickFiltersValue = "essentials" | "favorites" | "recents";
 

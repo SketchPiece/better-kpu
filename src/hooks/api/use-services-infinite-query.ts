@@ -1,6 +1,5 @@
 import apiClient from "@/lib/kpu-api";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { usePreferences } from "../use-preferences";
 import { useEffect, useRef } from "react";
 import type { CategoryValue } from "@/lib/categories";
 import type { Service } from "@/lib/kpu-api/types";
@@ -15,7 +14,7 @@ interface ServicesInfiniteQueryProps {
 export function useServicesInfiniteQuery({
   searchQuery,
   category,
-  initialServices,
+  // initialServices,
 }: ServicesInfiniteQueryProps) {
   const { preferences } = usePreferencesContext();
   const lastCategory = useRef(category);

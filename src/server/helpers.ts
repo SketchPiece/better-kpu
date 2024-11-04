@@ -1,4 +1,4 @@
-import { Service } from "@/lib/kpu-api/types";
+import type { Service } from "@/lib/kpu-api/types";
 import { kv } from "@vercel/kv";
 
 class FavoriteStore {

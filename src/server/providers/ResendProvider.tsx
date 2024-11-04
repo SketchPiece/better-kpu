@@ -26,7 +26,7 @@ export function ResendCodeProvider({ apiKey, from }: ResendProviderOptions) {
       provider: { from },
     }) {
       try {
-        const emailResult = await resend.emails.send({
+        await resend.emails.send({
           from,
           to: email,
           subject: "Verify your email",
