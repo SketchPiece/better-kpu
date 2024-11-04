@@ -31,14 +31,29 @@ export const posts = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     createdByIdIdx: index("created_by_idx").on(example.createdById),
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
+
+export const services = createTable("services", {
+  id: serial("id").primaryKey(),
+  uid: varchar("uid", { length: 255 }).notNull().unique(),
+  title: varchar("title", { length: 255 }).notNull(),
+  image: varchar("image", { length: 255 }),
+  uniqueKey: varchar("unique_key", { length: 255 }).notNull().unique(),
+  description: varchar("description", { length: 255 }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 })
@@ -54,8 +69,25 @@ export const users = createTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
+export const favorites = createTable("favorite", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  serviceId: integer("service_id")
+    .notNull()
+    .references(() => services.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  favorites: many(favorites),
 }));
 
 export const accounts = createTable(
@@ -84,7 +116,7 @@ export const accounts = createTable(
       columns: [account.provider, account.providerAccountId],
     }),
     userIdIdx: index("account_user_id_idx").on(account.userId),
-  })
+  }),
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -107,7 +139,7 @@ export const sessions = createTable(
   },
   (session) => ({
     userIdIdx: index("session_user_id_idx").on(session.userId),
-  })
+  }),
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -126,5 +158,5 @@ export const verificationTokens = createTable(
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  }),
 );

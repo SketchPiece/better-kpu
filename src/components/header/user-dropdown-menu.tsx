@@ -1,4 +1,3 @@
-import { usePreferences } from "@/hooks/use-preferences";
 import { Icons } from "../icons";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import {
@@ -19,7 +18,8 @@ import {
 import type { QuickFiltersValue } from "../home/quick-filters";
 import SimpleTooltip from "../ui/simple-tooltip";
 import { useClipboard } from "@mantine/hooks";
-import { excludeValue, includeValue } from "./helpers";
+import { useState } from "react";
+import { usePreferencesContext } from "../contexts/preferences-context";
 
 interface UserDropdownMenuProps {
   initials: string;
@@ -29,6 +29,42 @@ interface UserDropdownMenuProps {
   onSignOut?: () => void;
 }
 
+interface RolesSelectOptions {
+  defaultValue?: ("student" | "employee")[];
+  onChange: (value: ("student" | "employee")[]) => void;
+}
+
+function useRolesSelect({
+  defaultValue = ["student", "employee"],
+  onChange,
+}: RolesSelectOptions) {
+  const [studentValue, setStudentValue] = useState(
+    defaultValue.includes("student"),
+  );
+  const [employeeValue, setEmployeeValue] = useState(
+    defaultValue.includes("employee"),
+  );
+
+  return {
+    studentValue,
+    employeeValue,
+    handleStudentChange: (value: boolean) => {
+      const rolesValue: ("student" | "employee")[] = [];
+      if (value) rolesValue.push("student");
+      if (employeeValue) rolesValue.push("employee");
+      onChange(rolesValue);
+      setStudentValue(value);
+    },
+    handleEmployeeChange: (value: boolean) => {
+      const rolesValue: ("student" | "employee")[] = [];
+      if (value) rolesValue.push("employee");
+      if (studentValue) rolesValue.push("student");
+      onChange(rolesValue);
+      setEmployeeValue(value);
+    },
+  };
+}
+
 export default function UserDropdownMenu({
   initials,
   username,
@@ -36,20 +72,15 @@ export default function UserDropdownMenu({
   onDefaultViewChange,
   onSignOut,
 }: UserDropdownMenuProps) {
-  const { preferences, updatePreference } = usePreferences();
+  const { preferences, updatePreference } = usePreferencesContext();
   const clipboard = useClipboard({ timeout: 2000 });
 
-  const handleRoleCheckboxChange = (
-    role: "student" | "employee",
-    checked: boolean,
-  ) => {
-    updatePreference(
-      "roles",
-      checked
-        ? includeValue(preferences.roles, role)
-        : excludeValue(preferences.roles, role),
-    );
-  };
+  const rolesSelectProps = useRolesSelect({
+    defaultValue: preferences.roles,
+    onChange: (value) => {
+      updatePreference("roles", value);
+    },
+  });
 
   const handleDefaultViewChange = (value: QuickFiltersValue) => {
     updatePreference("defaultView", value);
@@ -136,19 +167,23 @@ export default function UserDropdownMenu({
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem
-                checked={preferences.roles.includes("student")}
-                onCheckedChange={(checked) =>
-                  handleRoleCheckboxChange("student", checked)
-                }
+                checked={rolesSelectProps.studentValue}
+                onCheckedChange={rolesSelectProps.handleStudentChange}
+                // checked={preferences.roles.includes("student")}
+                // onCheckedChange={(checked) =>
+                //   handleRoleCheckboxChange("student", checked)
+                // }
                 onSelect={(e) => e.preventDefault()}
               >
                 <Icons.graduationCap className="mr-2" /> Student
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
-                checked={preferences.roles.includes("employee")}
-                onCheckedChange={(checked) =>
-                  handleRoleCheckboxChange("employee", checked)
-                }
+                checked={rolesSelectProps.employeeValue}
+                onCheckedChange={rolesSelectProps.handleEmployeeChange}
+                // checked={preferences.roles.includes("employee")}
+                // onCheckedChange={(checked) =>
+                //   handleRoleCheckboxChange("employee", checked)
+                // }
                 onSelect={(e) => e.preventDefault()}
               >
                 <Icons.briefcaseBusiness className="mr-2" /> Employee

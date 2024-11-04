@@ -9,6 +9,7 @@ import ServiceCard from "./service-card";
 import { cn, resolveImageUrl } from "@/lib/utils";
 import type { Nullable } from "@/lib/types";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
+import { useDebouncedCallback } from "@mantine/hooks";
 
 interface OtherServicesProps {
   searchQuery?: string;
@@ -47,6 +48,7 @@ export default function OtherServices({
   });
 
   const { mutate: updateFavorite } = useFavoriteMutation();
+  const debouncedUpdateFavorite = useDebouncedCallback(updateFavorite, 500);
 
   const { dataIds: quickServicesIds } = useQuickServices({
     quickFilter: quickFilter ?? undefined,
@@ -85,17 +87,17 @@ export default function OtherServices({
             loader={<ServiceCardSkeleton amount={8} />}
           >
             {otherServicesFiltered.map(
-              ({ id, title, description, image, uniqueKey, uid, favorite }) => (
+              ({ title, description, image, uniqueKey, uid, favorite }) => (
                 <ServiceCard
                   key={uniqueKey}
-                  devId={id}
+                  devId={uniqueKey}
                   title={title}
                   image={resolveImageUrl(image)}
                   description={description}
                   favorite={favorite}
                   href={`/launch-task/all/${uid}`}
                   onFavoriteChange={(favorite) =>
-                    updateFavorite({ favorite, uid })
+                    debouncedUpdateFavorite({ favorite, uid })
                   }
                   allowFavorite={allowFavorite}
                 />

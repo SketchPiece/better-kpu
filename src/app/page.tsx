@@ -1,3 +1,4 @@
+import { PreferencesProvider } from "@/components/contexts/preferences-context";
 import HomePage from "@/components/home-page";
 import type { UserProfile } from "@/lib/kpu-api/types";
 import { getUsernameFromEmail } from "@/lib/utils";
@@ -26,9 +27,11 @@ export default async function Home() {
   });
 
   return (
-    <HomePage
-      initialUserProfile={userProfile}
-      initialQuickServices={quickServices}
-    />
+    <PreferencesProvider>
+      <HomePage
+        initialUserProfile={userProfile}
+        initialQuickServices={quickServices}
+      />
+    </PreferencesProvider>
   );
 }

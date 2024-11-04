@@ -12,9 +12,6 @@ import type { CategoryValue } from "../categories";
 import Cookies from "js-cookie";
 import { parseHtmlString } from "../utils";
 import { dangerousKpuApiInstance } from "./dangerous-kpu-api-instance";
-// import fetch from "node-fetch";
-
-// const KPU_API_URL = "https://one.kpu.ca";
 
 const commonOptions = {
   headers: {

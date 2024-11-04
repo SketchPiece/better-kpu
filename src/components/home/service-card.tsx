@@ -3,10 +3,9 @@ import { type ComponentProps, useState } from "react";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { useUserProfileQuery } from "@/hooks/api/use-user-profile-query";
 
 interface ServiceCardProps extends ComponentProps<"a"> {
-  devId?: number;
+  devId?: string;
   title: string;
   description: string;
   image: string;
@@ -43,8 +42,9 @@ export default function ServiceCard({
   return (
     <a
       className="group relative flex items-center justify-center gap-4 rounded-xl border-[#F0F0F0] px-2 py-3.5 transition-all hover:bg-[#F9F9F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-8 sm:py-6 dark:border-[#2E2E2E] dark:ring-offset-dark-background dark:hover:bg-[#2E2E2E]"
-      target="_blank"
+      // target="_blank"
       {...props}
+      href="#"
     >
       {isDevMode() && <div className="absolute left-3 top-3">{devId}</div>}
       <img

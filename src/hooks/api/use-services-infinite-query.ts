@@ -4,6 +4,7 @@ import { usePreferences } from "../use-preferences";
 import { useEffect, useRef } from "react";
 import type { CategoryValue } from "@/lib/categories";
 import type { Service } from "@/lib/kpu-api/types";
+import { usePreferencesContext } from "@/components/contexts/preferences-context";
 
 interface ServicesInfiniteQueryProps {
   searchQuery?: string;
@@ -16,7 +17,7 @@ export function useServicesInfiniteQuery({
   category,
   initialServices,
 }: ServicesInfiniteQueryProps) {
-  const { preferences } = usePreferences();
+  const { preferences } = usePreferencesContext();
   const lastCategory = useRef(category);
   const { data, fetchNextPage, hasNextPage, isLoading, ...rest } =
     useInfiniteQuery({

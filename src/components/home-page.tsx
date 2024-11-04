@@ -1,7 +1,6 @@
 "use client";
 import { useUserProfileQuery } from "@/hooks/api/use-user-profile-query";
 import { useColorAppearance } from "@/hooks/use-color-appearance";
-import { usePreferences } from "@/hooks/use-preferences";
 import useFilterState from "./home/hooks/use-filter-state";
 import { useQuickServices } from "@/hooks/api/use-quick-services";
 import { useDebouncedValue } from "@mantine/hooks";
@@ -16,6 +15,7 @@ import ScrollToTopButton from "./scroll-to-top-button";
 import type { Service, UserProfile } from "@/lib/kpu-api/types";
 import SearchInput from "./header/search-input";
 import { maybe } from "@/lib/utils";
+import { usePreferencesContext } from "./contexts/preferences-context";
 
 interface HomePageProps {
   initialUserProfile?: UserProfile;
@@ -32,7 +32,7 @@ export default function HomePage({
     useUserProfileQuery(initialUserProfile);
   const {
     preferences: { defaultView },
-  } = usePreferences();
+  } = usePreferencesContext();
 
   const isAuthorized =
     (Boolean(userProfile) && !isUserProfileLoading) ||

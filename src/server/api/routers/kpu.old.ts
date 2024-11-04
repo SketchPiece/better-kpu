@@ -11,26 +11,17 @@ import { favoriteStore, mapFavorites } from "@/server/helpers";
 import { kv } from "@vercel/kv";
 import type { Service } from "@/lib/kpu-api/types";
 
-const serviceCacheMap = new Map<string, Service>();
-
 async function cacheIndividualServices(services: Service[]) {
-  services.forEach((service) =>
-    serviceCacheMap.set(`service:${service.uid}`, service),
+  const cacheIndividual = services.map(async (service) =>
+    kv.set(`service:${service.uid}`, service),
   );
-
-  // const cacheIndividual = services.map(async (service) =>
-  //   kv.set(`service:${service.uid}`, service),
-  // );
-  // await Promise.all(cacheIndividual);
+  await Promise.all(cacheIndividual);
 }
 
 async function getCachedServicesByIds(uids: string[]) {
-  return uids
-    .map((uid) => serviceCacheMap.get(`service:${uid}`))
-    .filter(Boolean);
-  // return (
-  //   await Promise.all(uids.map((uid) => kv.get<Service>(`service:${uid}`)))
-  // ).filter(Boolean);
+  return (
+    await Promise.all(uids.map((uid) => kv.get<Service>(`service:${uid}`)))
+  ).filter(Boolean);
 }
 
 export const kpuRouter = createTRPCRouter({

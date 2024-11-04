@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { usePreferences } from "./use-preferences";
+import { usePreferencesContext } from "@/components/contexts/preferences-context";
 
 export function useColorAppearance() {
   const {
     preferences: { appearance },
-  } = usePreferences();
+  } = usePreferencesContext();
 
   useEffect(() => {
     if (

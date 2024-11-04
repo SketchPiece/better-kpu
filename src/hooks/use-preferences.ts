@@ -21,7 +21,7 @@ export function usePreferences() {
   const [preferences, setPreferences] = useLocalStorage<Preferences>({
     key: "better-kpu-preferences",
     defaultValue: defaultPreferences,
-    getInitialValueInEffect: false,
+    getInitialValueInEffect: true,
   });
 
   const validatedPreferences = preferencesSchema.safeParse(preferences);

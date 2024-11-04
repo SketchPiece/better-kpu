@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/lib/kpu-api";
-import { usePreferences } from "../use-preferences";
 import type { Service } from "@/lib/kpu-api/types";
 import type { QuickFiltersValue } from "@/components/home/quick-filters";
+import { usePreferencesContext } from "@/components/contexts/preferences-context";
 
 interface QuickServicesProps {
   initialQuickServices?: Record<QuickFiltersValue, Service[]>;
@@ -26,7 +26,8 @@ export function useQuickServices({
   onServicesEmptyUpdate,
   initialQuickServices,
 }: QuickServicesProps) {
-  const { preferences } = usePreferences();
+  const { preferences } = usePreferencesContext();
+
   const { data: services, ...rest } = useQuery({
     initialData: initialQuickServices,
     queryKey: ["services", preferences.roles.sort().join(",")],
