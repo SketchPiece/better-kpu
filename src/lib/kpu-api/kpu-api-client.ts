@@ -221,18 +221,21 @@ const kpuApiClient: ApiClient = {
     const userProfile = mapUserProfile(parsedUserProfile.data);
     return userProfile;
   },
-  updateFavorite: async ({ uid, favorite }: UpdateFavorite) => {
+  updateFavorite: async ({ service }: UpdateFavorite) => {
     await fetch("https://one.kpu.ca/favorite", {
       method: "POST",
       body: JSON.stringify({
-        status: favorite,
-        taskUid: uid,
+        status: service.favorite,
+        taskUid: service.uid,
       }),
       headers: {
         ...commonOptions.headers,
         "x-xsrf-token": Cookies.get("XSRF-TOKEN") ?? "",
       },
     });
+  },
+  updateRecent: () => {
+    return Promise.resolve();
   },
   getNotifications: async () => {
     const result = await dangerousKpuApiInstance.get(

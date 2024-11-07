@@ -12,7 +12,7 @@ function useCooldown<T extends (...args: unknown[]) => unknown>(
   cooldownSeconds: number,
 ): [(...args: Parameters<T>) => void, number] {
   const [remaining, setRemaining] = useState<number>(0); // Countdown state
-  const timerRef = useRef<NodeJS.Timeout | null>(null); // Reference to the timer
+  const timerRef = useRef<Timer | null>(null); // Reference to the timer
 
   /**
    * Function to execute the callback and start the cooldown.
