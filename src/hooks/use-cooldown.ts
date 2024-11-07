@@ -12,7 +12,7 @@ function useCooldown<T extends (...args: unknown[]) => unknown>(
   cooldownSeconds: number,
 ): [(...args: Parameters<T>) => void, number] {
   const [remaining, setRemaining] = useState<number>(0); // Countdown state
-  const timerRef = useRef<Timer | null>(null); // Reference to the timer
+  const timerRef = useRef<number | null>(null); // Reference to the timer
 
   /**
    * Function to execute the callback and start the cooldown.
@@ -33,7 +33,7 @@ function useCooldown<T extends (...args: unknown[]) => unknown>(
     // If there's an active cooldown
     if (remaining > 0) {
       // Set up a timer that decrements the countdown every second
-      timerRef.current = setInterval(() => {
+      timerRef.current = window.setInterval(() => {
         setRemaining((prev) => {
           if (prev <= 1) {
             if (timerRef.current) {
