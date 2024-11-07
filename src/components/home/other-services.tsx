@@ -102,7 +102,7 @@ export default function OtherServices({
                 image={resolveImageUrl(service.image)}
                 description={service.description}
                 favorite={service.favorite}
-                onClick={() => updateRecent({ service })}
+                onOpen={() => updateRecent({ service })}
                 onFavoriteChange={(favorite) =>
                   debouncedUpdateFavorite({ service: { ...service, favorite } })
                 }
