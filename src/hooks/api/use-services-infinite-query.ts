@@ -8,21 +8,26 @@ import { usePreferencesContext } from "@/components/contexts/preferences-context
 interface ServicesInfiniteQueryProps {
   searchQuery?: string;
   category?: CategoryValue | null;
-  initialServices?: Service[];
+  initialServices?: {
+    data: Service[];
+    hasNextPage: boolean;
+    page: number;
+  };
 }
 
 export function useServicesInfiniteQuery({
   searchQuery,
   category,
-  // initialServices,
+  initialServices,
 }: ServicesInfiniteQueryProps) {
   const { preferences } = usePreferencesContext();
   const lastCategory = useRef(category);
   const { data, fetchNextPage, hasNextPage, isLoading, ...rest } =
     useInfiniteQuery({
-      // initialData: {
-      //   pages: [initialServices]
-      // },
+      initialData:
+        initialServices && !searchQuery && !category
+          ? { pages: [initialServices], pageParams: [0] }
+          : undefined,
       queryKey: [
         "services",
         searchQuery,

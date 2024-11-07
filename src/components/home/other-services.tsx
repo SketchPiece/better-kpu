@@ -10,6 +10,7 @@ import { cn, resolveImageUrl } from "@/lib/utils";
 import type { Nullable } from "@/lib/types";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
 import { useDebouncedCallback } from "@mantine/hooks";
+import { useRecentMutation } from "@/hooks/api/user-recent-mutation";
 
 interface OtherServicesProps {
   searchQuery?: string;
@@ -44,10 +45,17 @@ export default function OtherServices({
   } = useServicesInfiniteQuery({
     searchQuery,
     category,
-    initialServices,
+    initialServices: initialServices
+      ? {
+          data: initialServices,
+          hasNextPage: true,
+          page: 0,
+        }
+      : undefined,
   });
 
   const { mutate: updateFavorite } = useFavoriteMutation();
+  const { mutate: updateRecent } = useRecentMutation();
   const debouncedUpdateFavorite = useDebouncedCallback(updateFavorite, 500);
 
   const { dataIds: quickServicesIds } = useQuickServices({
@@ -86,23 +94,22 @@ export default function OtherServices({
             hasMore={hasNextPage}
             loader={<ServiceCardSkeleton amount={8} />}
           >
-            {otherServicesFiltered.map(
-              ({ title, description, image, uniqueKey, uid, favorite }) => (
-                <ServiceCard
-                  key={uniqueKey}
-                  devId={uniqueKey}
-                  title={title}
-                  image={resolveImageUrl(image)}
-                  description={description}
-                  favorite={favorite}
-                  href={`/launch-task/all/${uid}`}
-                  onFavoriteChange={(favorite) =>
-                    debouncedUpdateFavorite({ favorite, uid })
-                  }
-                  allowFavorite={allowFavorite}
-                />
-              ),
-            )}
+            {otherServicesFiltered.map((service) => (
+              <ServiceCard
+                key={service.uniqueKey}
+                devId={service.uniqueKey}
+                title={service.title}
+                image={resolveImageUrl(service.image)}
+                description={service.description}
+                favorite={service.favorite}
+                onClick={() => updateRecent({ service })}
+                onFavoriteChange={(favorite) =>
+                  debouncedUpdateFavorite({ service: { ...service, favorite } })
+                }
+                allowFavorite={allowFavorite}
+                href={`/launch-task/all/${service.uniqueKey}`}
+              />
+            ))}
           </InfiniteScroll>
         )}
       </div>

@@ -1,21 +1,15 @@
 "use client";
+import { PREFERENCES_COOKIE_KEY } from "@/lib/constants";
 import { useLocalStorage } from "@mantine/hooks";
-import { createContext, useContext } from "react";
-import { z } from "zod";
-
-const preferencesSchema = z.object({
-  defaultView: z.enum(["essentials", "favorites", "recents"]),
-  roles: z.array(z.enum(["student", "employee"])),
-  appearance: z.enum(["dark", "light", "system"]),
-});
-
-type Preferences = z.infer<typeof preferencesSchema>;
-
-const defaultPreferences: Preferences = {
-  defaultView: "essentials",
-  roles: ["student", "employee"],
-  appearance: "system",
-};
+import Cookies from "js-cookie";
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useEffect,
+} from "react";
+import { type Preferences, preferencesSchema } from "./types";
+import { defaultPreferences } from "./helpers";
 
 const localStorageKey = "better-kpu-preferences";
 
@@ -25,23 +19,25 @@ const PreferencesContext = createContext<{
     key: T,
     value: Preferences[T],
   ) => void;
-}>({
-  preferences: defaultPreferences,
-  updatePreference: () => {
-    return;
-  },
-});
+} | null>(null);
+
+interface PreferencesProviderProps extends PropsWithChildren {
+  defalutValue?: Preferences;
+}
 
 export function PreferencesProvider({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  defalutValue,
+}: PreferencesProviderProps) {
   const [preferences, setPreferences] = useLocalStorage<Preferences>({
     key: localStorageKey,
-    defaultValue: defaultPreferences,
+    defaultValue: defalutValue ?? defaultPreferences,
     getInitialValueInEffect: true,
   });
+
+  useEffect(() => {
+    Cookies.set(PREFERENCES_COOKIE_KEY, JSON.stringify(preferences));
+  }, [preferences]);
 
   const validatedPreferences = preferencesSchema.safeParse(preferences);
   if (!validatedPreferences.success) setPreferences(defaultPreferences);

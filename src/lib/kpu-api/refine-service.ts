@@ -300,7 +300,7 @@ const refinedServices: Record<string, Partial<Service>> = {
   feedback: {
     image: "/service-images/feedback.png",
   },
-  ksa: {
+  kfa: {
     image: "/service-images/kwantlen-faculty-association.png",
   },
   "submit-a-key-request": {
@@ -336,7 +336,7 @@ const refinedServices: Record<string, Partial<Service>> = {
   "employee-sspr-registration": {
     image: "/service-images/employee-password.png",
   },
-  6721: {
+  "course-websites-051917": {
     image: "/service-images/moodle-community.png",
   },
   5285: {

@@ -20,8 +20,9 @@ export interface ApiClient {
     recents: Service[];
   }>;
   getUserProfile: () => Promise<UserProfile | null>;
-  updateFavorite: (params: UpdateFavorite) => Promise<void>;
   getNotifications: () => Promise<SchoolNotification[]>;
+  updateFavorite: (params: UpdateFavorite) => Promise<void>;
+  updateRecent: (params: UpdateFavorite) => Promise<void>;
 }
 
 export interface Service {
@@ -43,8 +44,7 @@ export interface UserProfile {
 }
 
 export interface UpdateFavorite {
-  favorite: boolean;
-  uid: string;
+  service: Service;
 }
 
 export interface Child {

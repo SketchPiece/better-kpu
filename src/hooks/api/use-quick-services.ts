@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/kpu-api";
 import type { Service } from "@/lib/kpu-api/types";
 import type { QuickFiltersValue } from "@/components/home/quick-filters";
@@ -21,16 +21,30 @@ function defineServices(
   return undefined;
 }
 
+// I have no idea why useQuery doesn't invalidate the query when the roles change
+// but this is a workaround
+export function useQuickServicesInvalidationFix() {
+  const queryClient = useQueryClient();
+  return (roles: string[]) => {
+    setTimeout(() => {
+      void queryClient.invalidateQueries({
+        queryKey: ["quick-services", roles.sort().join(",")],
+      });
+    });
+  };
+}
+
 export function useQuickServices({
   quickFilter,
   onServicesEmptyUpdate,
   initialQuickServices,
 }: QuickServicesProps) {
   const { preferences } = usePreferencesContext();
+  const rolesKey = preferences.roles.sort().join(",");
 
   const { data: services, ...rest } = useQuery({
     initialData: initialQuickServices,
-    queryKey: ["services", preferences.roles.sort().join(",")],
+    queryKey: ["quick-services", rolesKey],
     queryFn: () => apiClient.getQuickServices({ roles: preferences.roles }),
     refetchOnWindowFocus: "always",
   });

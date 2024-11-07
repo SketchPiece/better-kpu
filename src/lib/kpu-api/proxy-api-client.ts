@@ -19,6 +19,9 @@ const proxyApiClient: ApiClient = {
   updateFavorite: (params: UpdateFavorite) => {
     return trpcClient.kpu.updateFavorite.mutate(params);
   },
+  updateRecent: (params: UpdateFavorite) => {
+    return trpcClient.kpu.updateRecent.mutate(params);
+  },
   getNotifications: async () => {
     return trpcClient.kpu.getNotifications.query();
   },

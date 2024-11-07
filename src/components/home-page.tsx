@@ -26,6 +26,7 @@ interface HomePageProps {
 export default function HomePage({
   initialUserProfile,
   initialQuickServices,
+  initialServices,
 }: HomePageProps) {
   useColorAppearance();
   const { data: userProfile, isLoading: isUserProfileLoading } =
@@ -102,6 +103,7 @@ export default function HomePage({
           />
         )}
         <OtherServices
+          initialServices={initialServices}
           searchQuery={debouncedSearchQuery}
           category={state.selectedCategory}
           quickFilter={state.selectedQuickFilter}

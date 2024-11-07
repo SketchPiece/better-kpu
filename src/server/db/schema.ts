@@ -19,40 +19,13 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `one-kpu-web_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("created_by", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
-
 export const services = createTable("services", {
   id: serial("id").primaryKey(),
   uid: varchar("uid", { length: 255 }).notNull().unique(),
-  title: varchar("title", { length: 255 }).notNull(),
-  image: varchar("image", { length: 255 }),
   uniqueKey: varchar("unique_key", { length: 255 }).notNull().unique(),
-  description: varchar("description", { length: 255 }),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-    () => new Date(),
-  ),
+  title: varchar("title", { length: 255 }).notNull(),
+  image: varchar("image", { length: 255 }).notNull(),
+  description: varchar("description", { length: 255 }).notNull(),
 });
 
 export const users = createTable("user", {
@@ -69,25 +42,43 @@ export const users = createTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
-export const favorites = createTable("favorite", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id", { length: 255 })
-    .notNull()
-    .references(() => users.id),
-  serviceId: integer("service_id")
-    .notNull()
-    .references(() => services.id),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-    () => new Date(),
-  ),
-});
+export const favorites = createTable(
+  "favorite",
+  {
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    serviceId: integer("service_id")
+      .notNull()
+      .references(() => services.id),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.serviceId] }),
+  }),
+);
+
+export const recents = createTable(
+  "recent",
+  {
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    serviceId: integer("service_id")
+      .notNull()
+      .references(() => services.id),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.serviceId] }),
+  }),
+);
+
+// export const recents;
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
-  favorites: many(favorites),
 }));
 
 export const accounts = createTable(

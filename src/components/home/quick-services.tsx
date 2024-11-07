@@ -4,6 +4,7 @@ import { resolveImageUrl } from "@/lib/utils";
 import { useFavoriteMutation } from "@/hooks/api/use-favorite-mutation";
 import type { Service } from "@/lib/kpu-api/types";
 import { useDebouncedCallback } from "@mantine/hooks";
+import { useRecentMutation } from "@/hooks/api/user-recent-mutation";
 
 interface QuickServicesProps {
   services?: Service[];
@@ -17,6 +18,7 @@ export default function QuickServices({
   allowFavorite,
 }: QuickServicesProps) {
   const { mutate: updateFavorite } = useFavoriteMutation();
+  const { mutate: updateRecent } = useRecentMutation();
   const debouncedUpdateFavorite = useDebouncedCallback(updateFavorite, 500);
 
   return (
@@ -24,23 +26,22 @@ export default function QuickServices({
       {loading ? (
         <ServiceCardSkeleton amount={8} />
       ) : (
-        services?.map(
-          ({ title, description, image, uniqueKey, uid, favorite }) => (
-            <ServiceCard
-              key={uniqueKey}
-              devId={uniqueKey}
-              title={title}
-              image={resolveImageUrl(image)}
-              description={description}
-              favorite={favorite}
-              href={`/launch-task/all/${uid}`}
-              onFavoriteChange={(favorite) =>
-                debouncedUpdateFavorite({ favorite, uid })
-              }
-              allowFavorite={allowFavorite}
-            />
-          ),
-        )
+        services?.map((service) => (
+          <ServiceCard
+            key={service.uniqueKey}
+            devId={service.uniqueKey}
+            title={service.title}
+            image={resolveImageUrl(service.image)}
+            description={service.description}
+            favorite={service.favorite}
+            onClick={() => updateRecent({ service })}
+            onFavoriteChange={(favorite) =>
+              debouncedUpdateFavorite({ service: { ...service, favorite } })
+            }
+            allowFavorite={allowFavorite}
+            href={`/launch-task/all/${service.uniqueKey}`}
+          />
+        ))
       )}
     </div>
   );

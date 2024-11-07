@@ -1,4 +1,5 @@
-import { usePreferences } from "@/hooks/use-preferences";
+import { useQuickServicesInvalidationFix } from "@/hooks/api/use-quick-services";
+import { usePreferencesContext } from "../contexts/preferences-context";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import {
@@ -16,7 +17,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { excludeValue, includeValue } from "./helpers";
+import { useRolesSelect } from "./hooks/use-roles-select";
 
 interface OptionsDropdownMenuProps {
   onSignIn?: () => void;
@@ -25,19 +26,17 @@ interface OptionsDropdownMenuProps {
 export default function OptionsDropdownMenu({
   onSignIn,
 }: OptionsDropdownMenuProps) {
-  const { preferences, updatePreference } = usePreferences();
+  const { preferences, updatePreference } = usePreferencesContext();
 
-  const handleRoleCheckboxChange = (
-    role: "student" | "employee",
-    checked: boolean,
-  ) => {
-    updatePreference(
-      "roles",
-      checked
-        ? includeValue(preferences.roles, role)
-        : excludeValue(preferences.roles, role),
-    );
-  };
+  const quickServicesFix = useQuickServicesInvalidationFix();
+
+  const rolesSelectProps = useRolesSelect({
+    defaultValue: preferences.roles,
+    onChange: (value) => {
+      updatePreference("roles", value);
+      quickServicesFix(value);
+    },
+  });
 
   return (
     <DropdownMenu>
@@ -71,19 +70,15 @@ export default function OptionsDropdownMenu({
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem
-                checked={preferences.roles.includes("student")}
-                onCheckedChange={(checked) =>
-                  handleRoleCheckboxChange("student", checked)
-                }
+                checked={rolesSelectProps.studentValue}
+                onCheckedChange={rolesSelectProps.handleStudentChange}
                 onSelect={(e) => e.preventDefault()}
               >
                 <Icons.graduationCap className="mr-2" /> Student
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
-                checked={preferences.roles.includes("employee")}
-                onCheckedChange={(checked) =>
-                  handleRoleCheckboxChange("employee", checked)
-                }
+                checked={rolesSelectProps.employeeValue}
+                onCheckedChange={rolesSelectProps.handleEmployeeChange}
                 onSelect={(e) => e.preventDefault()}
               >
                 <Icons.briefcaseBusiness className="mr-2" /> Employee

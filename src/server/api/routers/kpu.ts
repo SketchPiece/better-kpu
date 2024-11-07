@@ -8,30 +8,62 @@ import {
 import { z } from "zod";
 import cache from "@/server/cache";
 import { favoriteStore, mapFavorites } from "@/server/helpers";
-import { kv } from "@vercel/kv";
 import type { Service } from "@/lib/kpu-api/types";
+import { favorites, recents, services } from "@/server/db/schema";
+import { and, desc, eq, gt, sql } from "drizzle-orm";
+import { db } from "@/server/db";
 
-const serviceCacheMap = new Map<string, Service>();
-
-async function cacheIndividualServices(services: Service[]) {
-  services.forEach((service) =>
-    serviceCacheMap.set(`service:${service.uid}`, service),
-  );
-
-  // const cacheIndividual = services.map(async (service) =>
-  //   kv.set(`service:${service.uid}`, service),
-  // );
-  // await Promise.all(cacheIndividual);
+async function upsertService(service: Service) {
+  await db
+    .insert(services)
+    .values(service)
+    .onConflictDoUpdate({
+      target: services.uniqueKey,
+      set: {
+        title: sql`excluded.title`,
+        image: sql`excluded.image`,
+        description: sql`excluded.description`,
+      },
+    });
 }
 
-async function getCachedServicesByIds(uids: string[]) {
-  return uids
-    .map((uid) => serviceCacheMap.get(`service:${uid}`))
-    .filter(Boolean);
-  // return (
-  //   await Promise.all(uids.map((uid) => kv.get<Service>(`service:${uid}`)))
-  // ).filter(Boolean);
+async function getUserFavorites(userId: string): Promise<Service[]> {
+  const result = await db
+    .select()
+    .from(favorites)
+    .innerJoin(services, eq(favorites.serviceId, services.id))
+    .where(eq(favorites.userId, userId));
+  return result.map((r) => ({
+    ...r.services,
+    favorite: true,
+  }));
 }
+
+async function getRecentServices(userId: string): Promise<Service[]> {
+  const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+  const result = await db
+    .select()
+    .from(recents)
+    .innerJoin(services, eq(recents.serviceId, services.id))
+    .where(and(eq(recents.userId, userId), gt(recents.createdAt, oneDayAgo)))
+    .orderBy(desc(recents.createdAt))
+    .limit(8);
+  return result.map((r) => ({
+    ...r.services,
+    favorite: false,
+  }));
+}
+
+const serviceSchema = z.object({
+  id: z.number(),
+  uid: z.string(),
+  uniqueKey: z.string(),
+  title: z.string(),
+  description: z.string(),
+  image: z.string(),
+  favorite: z.boolean(),
+});
 
 export const kpuRouter = createTRPCRouter({
   getAllServices: publicProcedure
@@ -47,11 +79,7 @@ export const kpuRouter = createTRPCRouter({
       const userId = ctx.session?.user.id;
       const services = await cache(
         `services:${input.pageNumber ?? "0"}:${input.category ?? "all"}:${input.searchQuery ?? "all"}:${input.roles?.join(",") ?? "all"}`,
-        async () => {
-          const services = await kpuApiClient.getAllServices(input);
-          await cacheIndividualServices(services.data);
-          return services;
-        },
+        () => kpuApiClient.getAllServices(input),
       );
       if (!userId) return services;
       const favorites = await favoriteStore.getFavorites(userId);
@@ -71,19 +99,14 @@ export const kpuRouter = createTRPCRouter({
       const userId = ctx.session?.user.id;
       const quickServices = await cache(
         `quickServices:${input.roles?.join(",") ?? "all"}`,
-        async () => {
-          const quickServices = await kpuApiClient.getQuickServices(input);
-          await cacheIndividualServices(quickServices.essentials);
-          return quickServices;
-        },
+        () => kpuApiClient.getQuickServices(input),
       );
 
       if (!userId) return quickServices;
-      // rewrite favorites
-      const favoriteIds = await favoriteStore.getFavorites(userId);
-      const recentIds = await kv.lrange<string>(`recents:${userId}`, 0, -1);
-      const favorites = await getCachedServicesByIds(favoriteIds);
-      const recents = await getCachedServicesByIds(recentIds);
+
+      const favorites = await getUserFavorites(userId);
+      const favoriteIds = favorites.map((s) => s.uid);
+      const recents = await getRecentServices(userId);
 
       return {
         favorites: favorites.map((service) => ({ ...service, favorite: true })),
@@ -95,25 +118,51 @@ export const kpuRouter = createTRPCRouter({
     return cache(`notifications`, () => kpuApiClient.getNotifications());
   }),
   updateFavorite: protectedProcedure
-    .input(z.object({ uid: z.string(), favorite: z.boolean() }))
+    .input(
+      z.object({
+        service: serviceSchema,
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
-      if (input.favorite) {
-        await favoriteStore.addFavorite(ctx.session.user.id, input.uid);
+      await upsertService(input.service);
+      if (input.service.favorite) {
+        await ctx.db
+          .insert(favorites)
+          .values({
+            userId: ctx.session.user.id,
+            serviceId: input.service.id,
+          })
+          .onConflictDoNothing();
       } else {
-        await favoriteStore.removeFavorite(ctx.session.user.id, input.uid);
+        await ctx.db
+          .delete(favorites)
+          .where(
+            and(
+              eq(favorites.userId, ctx.session.user.id),
+              eq(favorites.serviceId, input.service.id),
+            ),
+          );
       }
     }),
-
-  getServiceUniqueKey: publicProcedure
-    .input(z.object({ uid: z.string() }))
-    .query(async ({ input, ctx }) => {
-      const userId = ctx.session?.user.id;
-      const service = await kv.get<Service>(`service:${input.uid}`);
-      if (userId) {
-        await kv.lrem(`recents:${userId}`, 0, input.uid);
-        await kv.lpush(`recents:${userId}`, input.uid);
-        await kv.ltrim(`recents:${userId}`, 0, 7);
-      }
-      return service?.uniqueKey;
+  updateRecent: protectedProcedure
+    .input(
+      z.object({
+        service: serviceSchema,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await upsertService(input.service);
+      await ctx.db
+        .insert(recents)
+        .values({
+          userId: ctx.session.user.id,
+          serviceId: input.service.id,
+        })
+        .onConflictDoUpdate({
+          target: [recents.userId, recents.serviceId],
+          set: {
+            createdAt: sql`now()`,
+          },
+        });
     }),
 });
