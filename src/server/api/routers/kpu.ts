@@ -82,10 +82,11 @@ export const kpuRouter = createTRPCRouter({
         () => kpuApiClient.getAllServices(input),
       );
       if (!userId) return services;
-      const favorites = await favoriteStore.getFavorites(userId);
+      const favorites = await getUserFavorites(userId);
+      const favoriteIds = favorites.map((s) => s.uid);
       return {
         ...services,
-        data: services.data.map(mapFavorites(favorites)),
+        data: services.data.map(mapFavorites(favoriteIds)),
       };
     }),
 
