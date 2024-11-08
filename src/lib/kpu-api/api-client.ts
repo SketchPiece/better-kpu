@@ -1,8 +1,14 @@
+import { isExtension } from "../utils";
+import kpuApiClient from "./kpu-api-client";
 import proxyApiClient from "./proxy-api-client";
 import type { ApiClient } from "./types";
 
 function getApiClient(): ApiClient {
-  return proxyApiClient;
+  if (isExtension()) {
+    return kpuApiClient;
+  } else {
+    return proxyApiClient;
+  }
 }
 
 const apiClient = getApiClient();

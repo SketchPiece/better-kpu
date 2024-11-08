@@ -17,30 +17,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function resolveImageUrl(url: string) {
-  // return url.startsWith("/service-images") ? chrome.runtime.getURL(url) : url;
-  return url;
+  if (isExtension()) {
+    return url.startsWith("/service-images") ? chrome.runtime.getURL(url) : url;
+  } else {
+    return url;
+  }
 }
 
 export function parseHtmlString(html: string) {
   if (typeof window === "undefined") return parseHtmlStringServer(html);
   return parseHtmlStringBrowser(html);
 }
-
-// type NodeObject = {
-//   type: string;
-//   attributes: Record<string, string>;
-//   children: Array<
-//     | { type: "text"; value: string | null }
-//     | {
-//         type: string;
-//         attributes?: Record<string, string>;
-//         children?: NodeObject["children"];
-//       }
-//   >;
-// };
-// const NodeType = {
-//   TEXT_NODE: 3,
-// };
 
 function parseHtmlStringServer(html: string) {
   // Parse the HTML string into a DOM-like structure using htmlparser2
@@ -109,4 +96,8 @@ export function capitalize(text: string) {
 
 export function maybe<T>(data: T | null): T | undefined {
   return data ?? undefined;
+}
+
+export function isExtension() {
+  return typeof process === "undefined";
 }

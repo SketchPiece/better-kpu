@@ -7,7 +7,7 @@ import {
 } from "@/server/api/trpc";
 import { z } from "zod";
 import cache from "@/server/cache";
-import { favoriteStore, mapFavorites } from "@/server/helpers";
+import { mapFavorites } from "@/server/helpers";
 import type { Service } from "@/lib/kpu-api/types";
 import { favorites, recents, services } from "@/server/db/schema";
 import { and, desc, eq, gt, sql } from "drizzle-orm";

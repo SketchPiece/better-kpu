@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "build:ext": "tsc --project tsconfig.vite.json && vite build",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "dev:email": "email dev",
+    "dev:ext": "vite",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
@@ -60,8 +62,10 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.28",
     "@tailwindcss/forms": "^0.5.9",
     "@total-typescript/ts-reset": "^0.6.1",
+    "@types/chrome": "^0.0.280",
     "@types/eslint": "^8.56.10",
     "@types/js-cookie": "^3.0.6",
     "@types/jsdom": "^21.1.7",
@@ -79,7 +83,8 @@
     "prettier-plugin-tailwindcss": "^0.6.8",
     "react-email": "^3.0.1",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
   },
   "ct3aMetadata": {
     "initVersion": "7.37.0"

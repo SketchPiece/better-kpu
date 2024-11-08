@@ -5,10 +5,10 @@ import UserDropdownMenu from "./user-dropdown-menu";
 import { useNotificationsQuery } from "@/hooks/api/use-notifications-query";
 import NotificationsPopover from "../notification-popover";
 import OneKpuLogo from "../one-kpu-logo";
-import type { QuickFiltersValue } from "../home/quick-filters";
 import useAuthentication from "@/hooks/use-authentication";
-import type { UserProfile } from "@/lib/kpu-api/types";
 import OptionsDropdownMenu from "./options-dropdown-menu";
+import type { QuickFiltersValue } from "../home/quick-filters";
+import type { UserProfile } from "@/lib/kpu-api/types";
 
 interface HeaderProps {
   searchQuery?: string;
