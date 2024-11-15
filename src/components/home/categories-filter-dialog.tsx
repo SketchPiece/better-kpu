@@ -94,7 +94,7 @@ export default function CategoriesFilterDialog({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-h-dvh max-w-4xl">
+      <DialogContent className="max-h-dvh max-w-4xl rounded-none">
         <DialogHeader>
           <DialogTitle>Categories</DialogTitle>
           <DialogDescription>

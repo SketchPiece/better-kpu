@@ -9,6 +9,8 @@ import useAuthentication from "@/hooks/use-authentication";
 import OptionsDropdownMenu from "./options-dropdown-menu";
 import type { QuickFiltersValue } from "../home/quick-filters";
 import type { UserProfile } from "@/lib/kpu-api/types";
+import { AskAiDialog } from "../home/ask-ai-dialog";
+import { useHashDialog } from "@/hooks/use-hash-dialog";
 
 interface HeaderProps {
   searchQuery?: string;
@@ -25,6 +27,7 @@ export default function Header({
 }: HeaderProps) {
   const { signIn, signOut } = useAuthentication();
   const { data: notifications } = useNotificationsQuery();
+  const showAiDialog = useHashDialog("ai");
 
   return (
     <header className="flex items-center justify-between px-6 py-4">
@@ -38,10 +41,13 @@ export default function Header({
         </button>
       </div>
 
-      <SearchInput
-        value={searchQuery}
-        onChange={(e) => onSearchQueryChange?.(e.target.value)}
-      />
+      <div className="flex gap-3">
+        <SearchInput
+          value={searchQuery}
+          onChange={(e) => onSearchQueryChange?.(e.target.value)}
+        />
+        {showAiDialog && <AskAiDialog />}
+      </div>
 
       <div className="flex flex-1 items-center justify-end gap-4">
         {userProfile ? (

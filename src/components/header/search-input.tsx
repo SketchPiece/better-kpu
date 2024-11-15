@@ -64,7 +64,7 @@ export default function SearchInput({ mobile, ...props }: SearchInputProps) {
         placeholder="Search for service..."
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        className="w-full rounded-full border-none bg-gray-100 px-6 py-3 pl-11 text-base font-medium transition-all placeholder:text-[#989898] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:py-3.5 lg:w-[37.5rem] lg:pl-16 lg:text-base dark:bg-[#2E2E2E] dark:placeholder:text-[#747474] dark:focus:ring-offset-dark-background"
+        className="w-full rounded-full border-none bg-[#F0F0F0] px-6 py-3 pl-11 text-base font-medium transition-all placeholder:text-[#989898] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:py-3.5 lg:w-[37.5rem] lg:pl-16 lg:text-base dark:bg-[#2E2E2E] dark:placeholder:text-[#747474] dark:focus:ring-offset-dark-background"
         {...props}
       />
 

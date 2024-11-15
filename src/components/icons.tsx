@@ -24,6 +24,7 @@ import {
   Inbox,
   Settings,
   Coffee,
+  Sparkles,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -52,6 +53,7 @@ export const Icons = {
   starOutline: Star,
   inbox: Inbox,
   settings: Settings,
+  sparkles: Sparkles,
   star: (props: LucideProps) => (
     <svg
       width="24"
@@ -212,6 +214,31 @@ export const Icons = {
           />
         </clipPath>
       </defs>
+    </svg>
+  ),
+  arrowSend: (props: LucideProps) => (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M10.1666 15.9999L16 10.1665L21.8334 15.9999"
+        stroke="currentColor"
+        stroke-width="1.64993"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M16 21.8333V10.1665"
+        stroke="currentColor"
+        stroke-width="1.64993"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   ),
 };

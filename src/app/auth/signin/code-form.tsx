@@ -90,7 +90,7 @@ export default function CodeForm({
             >
               <button
                 onClick={handleResend}
-                className="text-white hover:underline"
+                className="text-black dark:text-white hover:underline"
                 type="button"
               >
                 resend it

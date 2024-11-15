@@ -22,7 +22,6 @@ function useExtensionAuthentication() {
       },
       () => (window.location.href = "/"),
     );
-    console.log("signing out");
   };
 
   return {
