@@ -1,19 +1,19 @@
 import {
-  EmbeddingModelV1,
+  type EmbeddingModelV1,
   TooManyEmbeddingValuesForCallError,
-} from '@ai-sdk/provider';
+} from "@ai-sdk/provider";
 import {
   combineHeaders,
   createJsonResponseHandler,
-  FetchFunction,
+  type FetchFunction,
   postJsonToApi,
-} from '@ai-sdk/provider-utils';
-import { z } from 'zod';
+} from "@ai-sdk/provider-utils";
+import { z } from "zod";
 import {
-  MistralEmbeddingModelId,
-  MistralEmbeddingSettings,
-} from './cohere-embedding-settings';
-import { mistralFailedResponseHandler } from './cohere-error';
+  type MistralEmbeddingModelId,
+  type MistralEmbeddingSettings,
+} from "./cohere-embedding-settings";
+import { mistralFailedResponseHandler } from "./cohere-error";
 
 type MistralEmbeddingConfig = {
   provider: string;
@@ -23,7 +23,7 @@ type MistralEmbeddingConfig = {
 };
 
 export class MistralEmbeddingModel implements EmbeddingModelV1<string> {
-  readonly specificationVersion = 'v1';
+  readonly specificationVersion = "v1";
   readonly modelId: MistralEmbeddingModelId;
 
   private readonly config: MistralEmbeddingConfig;
@@ -57,8 +57,8 @@ export class MistralEmbeddingModel implements EmbeddingModelV1<string> {
     values,
     abortSignal,
     headers,
-  }: Parameters<EmbeddingModelV1<string>['doEmbed']>[0]): Promise<
-    Awaited<ReturnType<EmbeddingModelV1<string>['doEmbed']>>
+  }: Parameters<EmbeddingModelV1<string>["doEmbed"]>[0]): Promise<
+    Awaited<ReturnType<EmbeddingModelV1<string>["doEmbed"]>>
   > {
     if (values.length > this.maxEmbeddingsPerCall) {
       throw new TooManyEmbeddingValuesForCallError({
@@ -75,7 +75,7 @@ export class MistralEmbeddingModel implements EmbeddingModelV1<string> {
       body: {
         model: this.modelId,
         input: values,
-        encoding_format: 'float',
+        encoding_format: "float",
       },
       failedResponseHandler: mistralFailedResponseHandler,
       successfulResponseHandler: createJsonResponseHandler(
@@ -86,7 +86,7 @@ export class MistralEmbeddingModel implements EmbeddingModelV1<string> {
     });
 
     return {
-      embeddings: response.data.map(item => item.embedding),
+      embeddings: response.data.map((item) => item.embedding),
       usage: response.usage
         ? { tokens: response.usage.prompt_tokens }
         : undefined,
