@@ -112,7 +112,17 @@
         "service-images/admission.png",
         "service-images/convocation.png",
         "service-images/kaltura-video.png",
-        "service-images/bcgeu.png"
+        "service-images/bcgeu.png",
+        "service-images/book-space.png",
+        "service-images/bylaws.png",
+        "service-images/concord.png",
+        "service-images/current-balance.png",
+        "service-images/immigration.png",
+        "service-images/ksa.png",
+        "service-images/plan-courses.png",
+        "service-images/registration-guide.png",
+        "service-images/security.png",
+        "service-images/what.png"
       ],
       "matches": ["https://one.kpu.ca/*"]
     }
