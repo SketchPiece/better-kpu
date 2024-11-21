@@ -5,7 +5,6 @@ export function useHashDialog(hashValue: string) {
 
   useEffect(() => {
     const handleHashChange = () => {
-      console.log(window.location.hash);
       setShowDialog(window.location.hash === `#${hashValue}`);
     };
 

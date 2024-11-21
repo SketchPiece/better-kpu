@@ -28,13 +28,11 @@ export default function Header({
   const { signIn, signOut } = useAuthentication();
   const { data: notifications } = useNotificationsQuery();
   const showAiDialog = useHashDialog("ai");
-  console.log(showAiDialog);
 
   return (
     <header className="flex items-center justify-between px-6 py-4">
       <div className="flex-1">
         <button
-          // href="#"
           className="block w-fit rounded-full p-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           onClick={() => onSearchQueryChange?.("")}
         >

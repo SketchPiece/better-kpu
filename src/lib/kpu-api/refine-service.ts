@@ -137,7 +137,6 @@ const refinedServices: Record<string, Partial<Service>> = {
   "my-library-account": {
     image: "/service-images/library-account.png",
   },
-  // new services
   "library-services": {
     image: "/service-images/library-services.png",
   },
@@ -243,6 +242,15 @@ const refinedServices: Record<string, Partial<Service>> = {
   "transfer-credit-request": {
     image: "/service-images/transfer.png",
   },
+  "after-credit-transfer": {
+    image: "/service-images/transfer.png",
+  },
+  "transfer-credit": {
+    image: "/service-images/transfer.png",
+  },
+  "view-transfer-credit": {
+    image: "/service-images/transfer.png",
+  },
   "unofficial-transcript": {
     image: "/service-images/view-transcript.png",
   },
@@ -260,10 +268,10 @@ const refinedServices: Record<string, Partial<Service>> = {
   "finance-forms": {
     image: "/service-images/payroll.png",
   },
-  6233: {
+  "kpu-tech-programs": {
     image: "/service-images/tech.png",
   },
-  6236: {
+  "kpu-tech-how-to-apply": {
     image: "/service-images/tech.png",
   },
   6232: {
@@ -279,7 +287,7 @@ const refinedServices: Record<string, Partial<Service>> = {
   },
   pebblepad: {
     description:
-      "Enhance your educational experience with PebblePad. This versatile platform provides a range of resources to support your academic journey, allowing you to create, share, and reflect on your work.",
+      "PebblePad. This versatile platform provides a range of resources to support your academic journey, allowing you to create, share, and reflect on your work.",
     image: "/service-images/pebblepad.png",
   },
   "wsd-events": {
@@ -339,15 +347,6 @@ const refinedServices: Record<string, Partial<Service>> = {
   "course-websites-051917": {
     image: "/service-images/moodle-community.png",
   },
-  5285: {
-    image: "/service-images/hours.png",
-  },
-  6348: {
-    image: "/service-images/fees-and-costs.png",
-  },
-  5598: {
-    image: "/service-images/hours.png",
-  },
   classfeedback2: {
     image: "/service-images/course-feedback.png",
   },
@@ -362,9 +361,6 @@ const refinedServices: Record<string, Partial<Service>> = {
   },
   courseleaf: {
     image: "/service-images/cim.png",
-  },
-  6566: {
-    image: "/service-images/pay.png",
   },
   "admissions-guide": {
     image: "/service-images/admission.png",
@@ -383,6 +379,57 @@ const refinedServices: Record<string, Partial<Service>> = {
   },
   "advisor-connect": {
     image: "/service-images/study-abroad.png",
+  },
+  "current-balance": {
+    image: "/service-images/current-balance.png",
+  },
+  "concord-students": {
+    image: "/service-images/concord.png",
+    description: "Access to Concord, KPU's Staff & Faculty Parking Permits.",
+  },
+  "concord-employees": {
+    image: "/service-images/concord.png",
+    description: "Access to Concord, KPU's Student & Visitor Parking Permits.",
+  },
+  security: {
+    image: "/service-images/security.png",
+  },
+  "study-work-permit": {
+    image: "/service-images/immigration.png",
+  },
+  "international-orientation": {
+    image: "/service-images/immigration.png",
+  },
+  "plan-courses": {
+    image: "/service-images/plan-courses.png",
+  },
+  ksa: {
+    image: "/service-images/ksa.png",
+  },
+  "online-registration-guide": {
+    title: "Registration Guide",
+    image: "/service-images/registration-guide.png",
+  },
+  "room-space-booking": {
+    image: "/service-images/book-space.png",
+  },
+  "fsh-programs": {
+    image: "/service-images/science-and-horticulture.png",
+  },
+  "fsh-advising": {
+    image: "/service-images/science-and-horticulture.png",
+  },
+  "int-academic": {
+    image: "/service-images/study-abroad.png",
+  },
+  "int-non-academic": {
+    image: "/service-images/study-abroad.png",
+  },
+  "after-applying": {
+    image: "/service-images/what.png",
+  },
+  "bylaws-and-policies": {
+    image: "/service-images/bylaws.png",
   },
 };
 

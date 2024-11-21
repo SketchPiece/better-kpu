@@ -20,7 +20,9 @@ export interface ApiClient {
     recents: Service[];
   }>;
   getUserProfile: () => Promise<UserProfile | null>;
-  getNotifications: () => Promise<SchoolNotification[]>;
+  getNotifications: (params?: {
+    showFake?: boolean;
+  }) => Promise<SchoolNotification[]>;
   updateFavorite: (params: UpdateFavorite) => Promise<void>;
   updateRecent: (params: UpdateFavorite) => Promise<void>;
 }
