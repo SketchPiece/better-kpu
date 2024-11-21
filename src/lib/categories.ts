@@ -19,6 +19,7 @@ import {
   Lightbulb,
   Dumbbell,
   BusFront,
+  Users,
 } from "lucide-react";
 
 const categories = [
@@ -34,7 +35,7 @@ const categories = [
   { name: "Enrollment", icon: ClipboardCheck, value: "enrollment", items: 45 },
   {
     name: "Faculty Services",
-    icon: User,
+    icon: Users,
     value: "faculty-services",
     items: 22,
   },
